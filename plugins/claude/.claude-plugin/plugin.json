@@ -3,8 +3,8 @@
   "description": "Personal learning assistant. Author PhraseForge language lessons and research-and-write reports across technical and non-technical topics. Renders to MDX, Anki flashcards, or Typst PDFs.",
   "version": "0.1.0",
   "author": {
-    "name": "TODO_AUTHOR_NAME",
-    "email": "TODO_AUTHOR_EMAIL"
+    "name": "David P.",
+    "email": "dpurge@example.com"
   },
   "license": "Apache-2.0",
   "keywords": [
