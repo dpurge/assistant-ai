@@ -1,0 +1,413 @@
+{
+  "$defs": {
+    "DialogSource": {
+      "description": "A dialog source. Matches the phraseforge-web `dialog` code-fence parser\nmodel: optional title, interleaved narration paragraphs and speaker turns,\neach turn optionally anonymous and optionally multi-paragraph.",
+      "properties": {
+        "kind": {
+          "const": "dialog",
+          "title": "Kind",
+          "type": "string"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Title"
+        },
+        "items": {
+          "items": {
+            "discriminator": {
+              "mapping": {
+                "narration": "#/$defs/Narration",
+                "turn": "#/$defs/DialogTurn"
+              },
+              "propertyName": "kind"
+            },
+            "oneOf": [
+              {
+                "$ref": "#/$defs/Narration"
+              },
+              {
+                "$ref": "#/$defs/DialogTurn"
+              }
+            ]
+          },
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "kind"
+      ],
+      "title": "DialogSource",
+      "type": "object"
+    },
+    "DialogTurn": {
+      "description": "A speaker turn within a dialog.\n\n`speaker` None marks an anonymous turn (`--:` in phraseforge-web's MDX,\nem-dash in renderers). `paragraphs` is the body — each entry is one\nparagraph; multiple entries render as separate paragraphs.",
+      "properties": {
+        "kind": {
+          "const": "turn",
+          "default": "turn",
+          "title": "Kind",
+          "type": "string"
+        },
+        "speaker": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Speaker"
+        },
+        "paragraphs": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Paragraphs",
+          "type": "array"
+        }
+      },
+      "title": "DialogTurn",
+      "type": "object"
+    },
+    "Exercise": {
+      "properties": {
+        "type": {
+          "title": "Type",
+          "type": "string"
+        },
+        "instruction": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Instruction"
+        },
+        "items": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Items",
+          "type": "array"
+        }
+      },
+      "required": [
+        "type"
+      ],
+      "title": "Exercise",
+      "type": "object"
+    },
+    "ModelEntry": {
+      "description": "A model / phrase pattern.\n\n`pattern` is the foreign phrase. `translation` (required) is its Polish\ngloss; multiple senses separated by '; '. `transcription` is the romanized\nform, used for non-Latin scripts.",
+      "properties": {
+        "pattern": {
+          "title": "Pattern",
+          "type": "string"
+        },
+        "translation": {
+          "description": "Polish gloss for the pattern. Required.",
+          "title": "Translation",
+          "type": "string"
+        },
+        "transcription": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transcription"
+        }
+      },
+      "required": [
+        "pattern",
+        "translation"
+      ],
+      "title": "ModelEntry",
+      "type": "object"
+    },
+    "Narration": {
+      "description": "A non-speaker prose paragraph between turns in a dialog.\n\nStage directions, scene-setting, off-screen voices, etc. In the surrounding\ndialog's language (e.g. Polish prose around a Polish dialog).",
+      "properties": {
+        "kind": {
+          "const": "narration",
+          "default": "narration",
+          "title": "Kind",
+          "type": "string"
+        },
+        "text": {
+          "title": "Text",
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ],
+      "title": "Narration",
+      "type": "object"
+    },
+    "TextSource": {
+      "properties": {
+        "kind": {
+          "const": "text",
+          "default": "text",
+          "title": "Kind",
+          "type": "string"
+        },
+        "content": {
+          "title": "Content",
+          "type": "string"
+        }
+      },
+      "required": [
+        "content"
+      ],
+      "title": "TextSource",
+      "type": "object"
+    },
+    "VocabularyEntry": {
+      "properties": {
+        "headword": {
+          "title": "Headword",
+          "type": "string"
+        },
+        "grammar": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Grammar"
+        },
+        "transcription": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Transcription"
+        },
+        "translation": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Polish gloss. Separate multiple senses with '; ' (semicolon + space) — e.g. 'wszyscy; wszystkie', 'dzień dobry; cześć'.",
+          "title": "Translation"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
+        }
+      },
+      "required": [
+        "headword"
+      ],
+      "title": "VocabularyEntry",
+      "type": "object"
+    }
+  },
+  "properties": {
+    "version": {
+      "default": 1,
+      "title": "Version",
+      "type": "integer"
+    },
+    "title": {
+      "title": "Title",
+      "type": "string"
+    },
+    "description": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Description"
+    },
+    "lang": {
+      "description": "ISO 639-3 code of the foreign language",
+      "title": "Lang",
+      "type": "string"
+    },
+    "script": {
+      "default": "latn",
+      "description": "ISO 15924 script code (lowercase)",
+      "title": "Script",
+      "type": "string"
+    },
+    "level": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "CEFR level a1..c2 (lowercase)",
+      "title": "Level"
+    },
+    "date": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ISO date YYYY-MM-DD",
+      "title": "Date"
+    },
+    "author": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Author"
+    },
+    "vocabulary": {
+      "items": {
+        "$ref": "#/$defs/VocabularyEntry"
+      },
+      "title": "Vocabulary",
+      "type": "array"
+    },
+    "models": {
+      "items": {
+        "$ref": "#/$defs/ModelEntry"
+      },
+      "title": "Models",
+      "type": "array"
+    },
+    "source": {
+      "anyOf": [
+        {
+          "discriminator": {
+            "mapping": {
+              "dialog": "#/$defs/DialogSource",
+              "text": "#/$defs/TextSource"
+            },
+            "propertyName": "kind"
+          },
+          "oneOf": [
+            {
+              "$ref": "#/$defs/TextSource"
+            },
+            {
+              "$ref": "#/$defs/DialogSource"
+            }
+          ]
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Source"
+    },
+    "transcription": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Transcription"
+    },
+    "translation": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Translation"
+    },
+    "questions": {
+      "anyOf": [
+        {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "title": "Questions"
+    },
+    "exercises": {
+      "items": {
+        "$ref": "#/$defs/Exercise"
+      },
+      "title": "Exercises",
+      "type": "array"
+    }
+  },
+  "required": [
+    "title",
+    "lang"
+  ],
+  "title": "Lesson",
+  "type": "object"
+}

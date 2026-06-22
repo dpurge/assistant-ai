@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "title": "Krótka rozmowa",
+  "lang": "fas",
+  "script": "arab",
+  "date": "2026-07-04",
+  "vocabulary": [
+    {"headword": "خانه", "grammar": "N", "transcription": "xāne", "translation": "dom"},
+    {"headword": "کجا", "grammar": "Pron", "transcription": "kojā", "translation": "dokąd; gdzie"}
+  ],
+  "models": [
+    {"pattern": "سلام", "transcription": "salām", "translation": "cześć"},
+    {"pattern": "اسم من … است", "transcription": "esm-e man … ast", "translation": "moje imię to …"}
+  ],
+  "source": {
+    "kind": "dialog",
+    "title": "Krótka rozmowa",
+    "items": [
+      {"kind": "narration", "text": "Dwoje znajomych spotyka się na ulicy."},
+      {"kind": "turn", "speaker": "Aḥmad", "paragraphs": ["Marḥabā!", "Kayfa ḥāluka?"]},
+      {"kind": "turn", "speaker": "Sārah", "paragraphs": ["Ahlan wa-sahlan."]},
+      {"kind": "turn", "speaker": null, "paragraphs": ["Pauza w tle."]}
+    ]
+  },
+  "transcription": "Aḥmad: Marḥabā! Sārah: Ahlan wa-sahlan.",
+  "translation": "Ahmad: cześć! Sara: witam serdecznie."
+}

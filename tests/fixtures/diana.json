@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "title": "Bogini łowów Diana",
+  "lang": "lat",
+  "script": "latn",
+  "date": "2026-06-22",
+  "level": "a1",
+  "vocabulary": [
+    {"headword": "Diana", "grammar": "N f sg", "translation": "Diana"},
+    {"headword": "dea", "grammar": "N f sg", "translation": "bogini"},
+    {"headword": "silva", "grammar": "N f sg", "translation": "las; puszcza"}
+  ],
+  "models": [
+    {"pattern": "Diana est dea.", "translation": "Diana jest boginią."},
+    {"pattern": "Diana silvas amat.", "translation": "Diana kocha lasy."}
+  ],
+  "source": {"kind": "text", "content": "Diana est dea silvarum et venationis."},
+  "translation": "Diana to bogini lasów i łowów.",
+  "questions": ["Quis est Diana?"],
+  "exercises": [
+    {"type": "translation", "instruction": "Przetłumacz na polski:", "items": ["Diana est dea.", "Diana silvas amat."]}
+  ]
+}

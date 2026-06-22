@@ -1,0 +1,100 @@
+#import "@local/dpurge-langnote:{{ package_version }}": (
+  LangNote,
+  Lesson,
+  Vocabulary,
+  Models,
+  Text,
+  Dialog,
+  Questions,
+  Exercise,
+  Instruction,
+  TitlePage,
+  TableOfContents,
+)
+
+#show: LangNote.with(
+  title: {{ lesson.title | string_literal }},
+  author: {% if lesson.author %}{{ lesson.author | string_literal }}{% else %}none{% endif %},
+  native-lang: "pol",
+  foreign-lang: "{{ lesson.lang }}",
+  foreign-script: "{{ lesson.script }}",
+)
+
+#TitlePage()
+
+#Lesson(
+  date: datetime(year: {{ date_year }}, month: {{ date_month }}, day: {{ date_day }}),
+)[
+{%- set vocab_entries = lesson.vocabulary | selectattr('headword') | list %}
+{%- if vocab_entries %}
+
+#Vocabulary[
+{%- for e in vocab_entries %}
+  - {{ e.headword | content_escape }}{% if e.grammar %} {{ "{" }}{{ e.grammar | content_escape }}{{ "}" }}{% endif %}{% if e.transcription %} [{{ e.transcription | content_escape }}]{% endif %}{% if e.translation %} = {{ e.translation | content_escape }}{% endif %}{% if e.notes %} ({{ e.notes | content_escape }}){% endif %}
+{%- endfor %}
+]
+{%- endif %}
+{%- set model_entries = lesson.models | selectattr('pattern') | list %}
+{%- if model_entries %}
+
+#Models(title: "Modele")[
+{%- for m in model_entries %}
+  - {{ m.pattern | content_escape }}{% if m.transcription %} [{{ m.transcription | content_escape }}]{% endif %} = {{ m.translation | content_escape }}
+{%- endfor %}
+]
+{%- endif %}
+{%- if lesson.source and lesson.source.kind == "dialog" and lesson.source.items %}
+
+#Dialog(title: {% if lesson.source.title %}{{ lesson.source.title | string_literal }}{% else %}"Dialog"{% endif %})[
+{%- for item in lesson.source.items %}
+{%- if item.kind == "turn" %}
+{%- set body = item.paragraphs | join(' ') %}
+{%- if body %}
+  - {% if item.speaker %}{{ item.speaker | content_escape }}: {% else %}— {% endif %}{{ body | content_escape }}
+{%- endif %}
+{%- elif item.kind == "narration" and item.text %}
+  - {{ item.text | content_escape }}
+{%- endif %}
+{%- endfor %}
+]
+{%- elif lesson.source and lesson.source.kind == "text" and lesson.source.content %}
+
+#Text(title: "Tekst")[
+  {{ lesson.source.content | trim | content_escape }}
+]
+{%- endif %}
+{%- if lesson.transcription and lesson.transcription | trim %}
+
+#Text(title: "Transkrypcja")[
+  {{ lesson.transcription | trim | content_escape }}
+]
+{%- endif %}
+{%- if lesson.translation and lesson.translation | trim %}
+
+#Text(title: "Tłumaczenie")[
+  {{ lesson.translation | trim | content_escape }}
+]
+{%- endif %}
+{%- set qs = (lesson.questions or []) | select | list %}
+{%- if qs %}
+
+#Questions(title: "Pytania")[
+{%- for q in qs %}
+  + {{ q | content_escape }}
+{%- endfor %}
+]
+{%- endif %}
+{%- for ex in lesson.exercises %}
+
+#Exercise(number: "{{ loop.index }}")[
+{%- if ex.instruction %}
+  #Instruction[{{ ex.instruction | content_escape }}]
+{%- endif %}
+{%- for it in ex.items %}
+  - {{ it | content_escape }}
+{%- endfor %}
+]
+{%- endfor %}
+]
+
+#TableOfContents()

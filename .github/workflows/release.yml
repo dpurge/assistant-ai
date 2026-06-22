@@ -1,0 +1,71 @@
+name: release
+
+on:
+  # Tag-triggered: create a GitHub Release with the built zips.
+  # The tag must match the version in plugins/claude/.claude-plugin/plugin.json
+  # (formatted as "v<version>"). Push e.g. `v0.1.0` to trigger.
+  push:
+    tags:
+      - "v*"
+  # Manual dispatch: build + upload zips as a workflow artifact only — no
+  # GitHub Release is created. Useful for verifying a build before tagging.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
+        with:
+          enable-cache: true
+
+      - name: Install just
+        run: |
+          curl --proto '=https' --tlsv1.2 -sSf https://just.systems/install.sh \
+            | bash -s -- --to /usr/local/bin
+
+      - name: Verify tag matches plugin.json version
+        if: github.event_name == 'push'
+        run: |
+          TAG="${{ github.ref_name }}"
+          EXPECTED="v$(jq -r .version plugins/claude/.claude-plugin/plugin.json)"
+          if [ "$TAG" != "$EXPECTED" ]; then
+            echo "::error::Tag $TAG does not match plugin.json version $EXPECTED."
+            echo "Bump plugin.json (or retag) before pushing."
+            exit 1
+          fi
+
+      - name: Run tests
+        run: just test
+
+      - name: Build zips
+        run: just build
+
+      - name: Show artifacts
+        run: ls -la dist/
+
+      - name: Create GitHub Release (tag push only)
+        if: github.event_name == 'push'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ github.ref_name }}" \
+            dist/*.zip \
+            --title "${{ github.ref_name }}" \
+            --generate-notes
+
+      - name: Upload artifacts (workflow_dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/upload-artifact@v4
+        with:
+          name: assistant-ai-dist-${{ github.run_id }}
+          path: dist/*.zip
+          if-no-files-found: error
+          retention-days: 14

@@ -1,0 +1,80 @@
+---
+title: {{ lesson.title | yaml_string }}
+{%- if lesson.description %}
+description: {{ lesson.description | yaml_string }}
+{%- endif %}
+---
+
+# {{ lesson.title }}
+{%- set vocab_entries = lesson.vocabulary | selectattr('headword') | list %}
+{%- if vocab_entries %}
+
+```vocabulary lang={{ lesson.lang }} script={{ lesson.script }}
+{%- for e in vocab_entries %}
+{{ e.headword }}{% if e.grammar %} {{ "{" }}{{ e.grammar }}{{ "}" }}{% endif %}{% if e.transcription %} [{{ e.transcription }}]{% endif %}{% if e.translation %} = {{ e.translation }}{% endif %}
+{%- endfor %}
+```
+{%- endif %}
+{%- set model_entries = lesson.models | selectattr('pattern') | list %}
+{%- if model_entries %}
+
+```models lang={{ lesson.lang }} script={{ lesson.script }}
+{%- for m in model_entries %}
+{{ m.pattern }}{% if m.transcription %} [{{ m.transcription }}]{% endif %} = {{ m.translation }}
+{%- endfor %}
+```
+{%- endif %}
+{%- if lesson.source and lesson.source.kind == "text" and lesson.source.content %}
+
+<Text lang="{{ lesson.lang }}" script="{{ lesson.script }}">
+
+{{ lesson.source.content | trim }}
+
+</Text>
+{%- elif lesson.source and lesson.source.kind == "dialog" and lesson.source.items %}
+
+```dialog lang={{ lesson.lang }} script={{ lesson.script }}
+{%- if lesson.source.title %}
+# {{ lesson.source.title }}
+{%- endif %}
+{{ dialog_body }}
+```
+{%- endif %}
+{%- if lesson.transcription and lesson.transcription | trim and lesson.script not in ['latn', 'cyrl', 'grek'] %}
+
+<Text as="transcription" lang="{{ lesson.lang }}" script="latn">
+
+{{ lesson.transcription | trim }}
+
+</Text>
+{%- endif %}
+{%- if lesson.translation and lesson.translation | trim %}
+
+<Text as="translation" lang="pol" script="latn">
+
+{{ lesson.translation | trim }}
+
+</Text>
+{%- endif %}
+{%- set qs = (lesson.questions or []) | select | list %}
+{%- if qs %}
+
+<Questions lang="{{ lesson.lang }}" script="{{ lesson.script }}">
+
+{% for q in qs %}{{ loop.index }}. {{ q }}
+{% endfor %}
+</Questions>
+{%- endif %}
+{%- for ex in lesson.exercises %}
+
+<Exercise type="{{ ex.type }}" lang="{{ lesson.lang }}" script="{{ lesson.script }}">
+{%- if ex.instruction %}
+
+<Instruction>{{ ex.instruction }}</Instruction>
+{%- endif %}
+{%- for it in ex.items %}
+- {{ it }}
+{%- endfor %}
+
+</Exercise>
+{%- endfor %}
