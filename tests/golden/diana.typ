@@ -27,9 +27,9 @@
 )[
 
 #Vocabulary[
-  - Diana {N f sg} = Diana
-  - dea {N f sg} = bogini
-  - silva {N f sg} = las; puszcza
+  - Diana {N f} = Diana
+  - dea {N f} = bogini
+  - silva {N f} = las; puszcza
 ]
 
 #Models(title: "Modele")[

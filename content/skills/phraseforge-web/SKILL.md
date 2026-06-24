@@ -1,12 +1,12 @@
 ---
 name: phraseforge-web
-description: Render a PhraseForge lesson as an MDX file in the phraseforge-web Docusaurus repo at /Users/jprusaczyk/Documents/src/phraseforge-web (upstream https://github.com/dpurge/phraseforge-web). Handles file-path conventions, the MDX section order, the registered MDX component vocabulary, and the optional English i18n mirror. This is the default output target for phraseforge-core.
+description: Render a PhraseForge lesson as an MDX file in the phraseforge-web Docusaurus repo (https://github.com/dpurge/phraseforge-web). Handles file-path conventions, the MDX section order, the registered MDX component vocabulary, and the optional English i18n mirror. This is the default output target for phraseforge-core.
 user-invocable: true
 ---
 
 # PhraseForge-Web lesson target
 
-Render a PhraseForge lesson (produced by `phraseforge-core` + the matching `phraseforge-lang-<iso>`) as a single MDX file in the **phraseforge-web** Docusaurus site at `/Users/jprusaczyk/Documents/src/phraseforge-web`.
+Render a PhraseForge lesson (produced by `phraseforge-core` + the matching `phraseforge-lang-<iso>`) as a single MDX file in the **phraseforge-web** Docusaurus site. The local clone path is not fixed — ask the user where phraseforge-web is checked out if it is not obvious from context.
 
 This skill owns all MDX/Docusaurus-specific concerns:
 
@@ -25,17 +25,17 @@ description: <Polish one-liner>
 
 # <Polish title>
 
-```vocabulary lang=<lang3> script=<script>
-<headword> {<grammar tag>} — <Polish gloss>
-... (15–40 entries)
+```vocabulary lang=<lang3> script=<script4>
+<headword> {<grammar tag>} [<transcription>] = <translation> (<notes>)
+... (15–40 entries; omit optional parts when absent)
 ```
 
-```models lang=<lang3> script=<script>
-<phrase pattern 1>
-... (3–6 groups, 20–60 lines total)
+```models lang=<lang3> script=<script4>
+<phrase> [<transcription>] = <translation> (<notes>)
+... (3–6 groups, 20–60 lines total; separate groups with a blank line)
 ```
 
-<Text as="source" lang="<lang3>" script="<script>">
+<Text lang="<lang3>" script="<script4>">
 <adapted source text>
 </Text>
 
@@ -49,21 +49,23 @@ description: <Polish one-liner>
 </Text>
 
 <!-- Optional. -->
-<Questions lang="<lang3>" script="<script>">
+<Questions lang="<lang3>" script="<script4>">
 1. <question 1>
 2. <question 2>
 </Questions>
 
-<Exercise type="translation" lang="<lang3>" script="<script>">
+<Exercise type="translation" lang="<lang3>" script="<script4>">
 <Instruction>Przetłumacz na polski:</Instruction>
-- <foreign sentence 1>
-- <foreign sentence 2>
+1. <foreign sentence 1>
+2. <foreign sentence 2>
 </Exercise>
 
 <!-- 3 more <Exercise> blocks: fill-gaps, word-order, multiple-choice. Add matching/true-false/open-answer if the text supports them. -->
 ```
 
-For dialog source content, use a `dialog` code fence instead of `<Text as="source">` (same `as=` attribute supported for transcription / translation). See `references/dialog.md`.
+For dialog source content, use a `dialog` code fence instead of `<Text>` (same `as` attribute supported for transcription / translation). See `references/dialog.md`.
+
+Grammar tags follow `phraseforge-core/references/vocabulary.md`. The canonical tags are not yet standardised in the real data — use them when generating lessons; preserve whatever tags exist when rendering parsed `.ff` content.
 
 ## When invoked
 
@@ -106,7 +108,7 @@ The tool writes a single `.mdx` file (plus an i18n mirror if you render one). Re
 
 Only use MDX components registered in the phraseforge-web repo at `src/components/LessonElement/`:
 
-- `<Text>` — with optional `as="source"`, `as="transcription"`, `as="translation"`.
+- `<Text>` — source text (no `as`); or `as="transcription"` / `as="translation"`.
 - `<Questions>` — same `as` attribute.
 - `<Exercise>`, `<Instruction>`, `<L>`, `<N>`, `<Hint>`, `<WordBank>`, `<Match>`, `<Column>`.
 - Code fences: `vocabulary`, `models`, `dialog` (`dialog` supports the same `as` attribute).
@@ -118,9 +120,9 @@ Don't invent new components.
 - `references/workflow.md` — full step-by-step rendering walkthrough.
 - `references/lesson-file.md` — file path, naming, frontmatter, section order.
 - `references/english-i18n.md` — English mirror conventions.
-- `references/vocabulary.md` — vocabulary code-fence format.
+- `references/vocabulary.md` — vocabulary code-fence format (defer to `phraseforge-core/references/vocabulary.md` for tag definitions).
 - `references/models.md` — models code-fence format.
-- `references/text.md` — `<Text>` component (prose), covers `as="source"`, `"transcription"`, `"translation"`.
+- `references/text.md` — `<Text>` component (prose), covers source, transcription, translation.
 - `references/dialog.md` — `dialog` code fence (conversations), same `as` attribute.
 - `references/questions.md` — `<Questions>` block for open-ended comprehension prompts.
 - `references/exercises.md` — all 7 exercise types and their components.

@@ -1,23 +1,23 @@
 {
   "version": 1,
-  "title": "Bogini łowów Diana",
+  "title": "Bogini \u0142ow\u00f3w Diana",
   "lang": "lat",
   "script": "latn",
   "date": "2026-06-22",
   "level": "a1",
   "vocabulary": [
-    {"headword": "Diana", "grammar": "N f sg", "translation": "Diana"},
-    {"headword": "dea", "grammar": "N f sg", "translation": "bogini"},
-    {"headword": "silva", "grammar": "N f sg", "translation": "las; puszcza"}
+    {"headword": "Diana", "grammar": "N f", "translation": "Diana"},
+    {"headword": "dea", "grammar": "N f", "translation": "bogini"},
+    {"headword": "silva", "grammar": "N f", "translation": "las; puszcza"}
   ],
   "models": [
-    {"pattern": "Diana est dea.", "translation": "Diana jest boginią."},
+    {"pattern": "Diana est dea.", "translation": "Diana jest bogini\u0105."},
     {"pattern": "Diana silvas amat.", "translation": "Diana kocha lasy."}
   ],
   "source": {"kind": "text", "content": "Diana est dea silvarum et venationis."},
-  "translation": "Diana to bogini lasów i łowów.",
+  "translation": "Diana to bogini las\u00f3w i \u0142ow\u00f3w.",
   "questions": ["Quis est Diana?"],
   "exercises": [
-    {"type": "translation", "instruction": "Przetłumacz na polski:", "items": ["Diana est dea.", "Diana silvas amat."]}
+    {"type": "translation", "instruction": "Przet\u0142umacz na polski:", "items": ["Diana est dea.", "Diana silvas amat."]}
   ]
 }

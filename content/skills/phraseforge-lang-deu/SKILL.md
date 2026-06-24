@@ -16,46 +16,37 @@ Not needed. German uses Latin script. Render `ä`, `ö`, `ü`, `ß` as-is; do **
 
 ## Vocabulary format
 
-Each noun entry takes the **definite article** + headword + grammar tag + Polish gloss:
+Tag conventions follow `phraseforge-core/references/vocabulary.md`. German-specific rules:
+
+- **Nouns:** include the **definite article** in the headword, mark gender and number. Use `{N m}` / `{N f}` / `{N n}` for singular dictionary entries; add `pl` only when listing the plural form separately.
+- **Verbs:** bare infinitive (no `zu`), tag `{V}`. Separable verbs: `{V sep}`. Reflexive: `{V refl}`.
+- **Adjectives:** uninflected (predicate) form, tag `{Adj}`.
 
 ```
-der Hund {N m sg}   — pies
-die Katze {N f sg}  — kot
-das Kind {N n sg}   — dziecko
-die Bücher {N n pl} — książki
-```
+der Hund {N m} = pies
+die Katze {N f} = kot
+das Kind {N n} = dziecko
+die Bücher {N n pl} = książki
 
-Verbs as the bare infinitive (no `zu`):
+gehen {V} = iść
+fahren {V} = jechać
+sein {V} = być
+aufstehen {V sep} = wstawać
+sich freuen {V refl} = cieszyć się
 
-```
-gehen {V}   — iść
-fahren {V}  — jechać
-sein {V}    — być
-```
-
-Adjectives in the uninflected (predicate) form:
-
-```
-klein {Adj} — mały
-gut {Adj}   — dobry
-```
-
-Separable-prefix verbs: show the unseparated infinitive but mark the prefix split:
-
-```
-aufstehen {V sep}   — wstawać
+klein {Adj} = mały
+gut {Adj} = dobry
+schnell {Adv} = szybko
 ```
 
 **Multiple senses** in the Polish translation are separated by `; ` (semicolon + space):
 
 ```
-alle     — wszyscy; wszystkie
-angenehm — miły; przyjemny
+alle {Pron} = wszyscy; wszystkie
+angenehm {Adj} = miły; przyjemny
 ```
 
-In the JSON contract this is just the `translation` string for that entry: `"translation": "wszyscy; wszystkie"`.
-
-See `phraseforge-core/references/vocabulary.md` for the underlying grammar-tag conventions; this skill only specifies German-specific shape.
+In the JSON this is the `translation` string: `"translation": "wszyscy; wszystkie"`.
 
 ## Inflection tables (optional, B1+)
 
@@ -68,7 +59,3 @@ Translate to Polish (`pol`). Match register: `Sie` → formal Polish; `du` → i
 ## Cultural / dialectal notes
 
 - Default to standard high German (Hochdeutsch). Note Austrian / Swiss variants only if they appear in the source.
-
-## Stub
-
-Inflection-table templates and exercise tweaks specific to German still TBD.

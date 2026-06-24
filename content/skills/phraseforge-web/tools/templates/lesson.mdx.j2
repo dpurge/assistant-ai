@@ -11,7 +11,7 @@ description: {{ lesson.description | yaml_string }}
 
 ```vocabulary lang={{ lesson.lang }} script={{ lesson.script }}
 {%- for e in vocab_entries %}
-{{ e.headword }}{% if e.grammar %} {{ "{" }}{{ e.grammar }}{{ "}" }}{% endif %}{% if e.transcription %} [{{ e.transcription }}]{% endif %}{% if e.translation %} = {{ e.translation }}{% endif %}
+{{ e.headword }}{% if e.grammar %} {{ "{" }}{{ e.grammar }}{{ "}" }}{% endif %}{% if e.transcription %} [{{ e.transcription }}]{% endif %}{% if e.translation %} = {{ e.translation }}{% endif %}{% if e.notes %} ({{ e.notes }}){% endif %}
 {%- endfor %}
 ```
 {%- endif %}
