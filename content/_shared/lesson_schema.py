@@ -35,11 +35,13 @@ class ModelEntry(BaseModel):
 
     `pattern` is the foreign phrase. `translation` (required) is its Polish
     gloss; multiple senses separated by '; '. `transcription` is the romanized
-    form, used for non-Latin scripts.
+    form, used for non-Latin scripts. `notes` carries optional usage notes,
+    multiple notes joined with '; '.
     """
     pattern: str
     translation: str = Field(..., description="Polish gloss for the pattern. Required.")
     transcription: str | None = None
+    notes: str | None = None
 
 
 class TextSource(BaseModel):
@@ -97,6 +99,8 @@ class Lesson(BaseModel):
     description: str | None = None
     lang: str = Field(..., description="ISO 639-3 code of the foreign language")
     script: str = Field("latn", description="ISO 15924 script code (lowercase)")
+    translation_lang: str | None = Field(None, description="ISO 639-3 code of the translation language")
+    translation_script: str | None = Field(None, description="ISO 15924 script code of the translation language")
     level: str | None = Field(None, description="CEFR level a1..c2 (lowercase)")
     date: str | None = Field(None, description="ISO date YYYY-MM-DD")
     author: str | None = None
@@ -105,5 +109,6 @@ class Lesson(BaseModel):
     source: Source | None = None
     transcription: str | None = None
     translation: str | None = None
+    translation_dialog: DialogSource | None = None
     questions: list[str] | None = None
     exercises: list[Exercise] = Field(default_factory=list)

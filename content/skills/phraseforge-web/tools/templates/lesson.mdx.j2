@@ -20,7 +20,7 @@ description: {{ lesson.description | yaml_string }}
 
 ```models lang={{ lesson.lang }} script={{ lesson.script }}
 {%- for m in model_entries %}
-{{ m.pattern }}{% if m.transcription %} [{{ m.transcription }}]{% endif %} = {{ m.translation }}
+{{ m.pattern }}{% if m.transcription %} [{{ m.transcription }}]{% endif %} = {{ m.translation }}{% if m.notes %} ({{ m.notes }}){% endif %}
 {%- endfor %}
 ```
 {%- endif %}
@@ -33,7 +33,7 @@ description: {{ lesson.description | yaml_string }}
 </Text>
 {%- elif lesson.source and lesson.source.kind == "dialog" and lesson.source.items %}
 
-```dialog lang={{ lesson.lang }} script={{ lesson.script }}
+```dialog lang="{{ lesson.lang }}" script="{{ lesson.script }}"
 {%- if lesson.source.title %}
 # {{ lesson.source.title }}
 {%- endif %}
@@ -48,9 +48,17 @@ description: {{ lesson.description | yaml_string }}
 
 </Text>
 {%- endif %}
-{%- if lesson.translation and lesson.translation | trim %}
+{%- if lesson.translation_dialog and lesson.translation_dialog.items %}
 
-<Text as="translation" lang="pol" script="latn">
+```dialog as="translation" lang="{{ lesson.translation_lang or 'pol' }}" script="{{ lesson.translation_script or 'latn' }}"
+{%- if lesson.translation_dialog.title %}
+# {{ lesson.translation_dialog.title }}
+{%- endif %}
+{{ dialog_translation_body }}
+```
+{%- elif lesson.translation and lesson.translation | trim %}
+
+<Text as="translation" lang="{{ lesson.translation_lang or 'pol' }}" script="{{ lesson.translation_script or 'latn' }}">
 
 {{ lesson.translation | trim }}
 
@@ -60,10 +68,8 @@ description: {{ lesson.description | yaml_string }}
 {%- if qs %}
 
 <Questions lang="{{ lesson.lang }}" script="{{ lesson.script }}">
-
 {% for q in qs %}{{ loop.index }}. {{ q }}
-{% endfor %}
-</Questions>
+{% endfor %}</Questions>
 {%- endif %}
 {%- for ex in lesson.exercises %}
 
@@ -72,9 +78,7 @@ description: {{ lesson.description | yaml_string }}
 
 <Instruction>{{ ex.instruction }}</Instruction>
 {%- endif %}
-{%- for it in ex.items %}
-- {{ it }}
-{%- endfor %}
-
+{% for it in ex.items %}{{ loop.index }}. {{ it }}
+{% endfor %}
 </Exercise>
 {%- endfor %}

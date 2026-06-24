@@ -47,8 +47,11 @@
   Aḥmad: Marḥabā! Sārah: Ahlan wa-sahlan.
 ]
 
-#Text(title: "Tłumaczenie")[
-  Ahmad: cześć! Sara: witam serdecznie.
+#Dialog(title: "Tłumaczenie")[
+  - Dwoje znajomych spotyka się na ulicy.
+  - Ahmad: Cześć! Jak się masz?
+  - Sara: Witam serdecznie.
+  - — Pauza w tle.
 ]
 ]
 

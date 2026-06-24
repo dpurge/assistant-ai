@@ -78,6 +78,42 @@ You don't write the lesson file yourself — the output skill does. After it ret
 
 ## Tools
 
-Invoke every tool via `uv run --script` so its [PEP 723](https://peps.python.org/pep-0723/) inline deps (if any) are resolved into uv's cache on first run. Current tools are stubs with no external deps.
+Invoke every tool via `uv run --script` so its [PEP 723](https://peps.python.org/pep-0723/) inline deps are resolved into uv's cache on first run.
 
-- `tools/ff-parser.py` — parse a `*.ff` PhraseForge source file into texts + vocabulary. Stub. Invoke as `uv run --script tools/ff-parser.py <path>`.
+- `tools/ff-parser.py` — parse a `*.ff` PhraseForge source file and emit a `Lesson` JSON object compatible with the output skills.
+
+  **Usage:**
+  ```
+  # Emit all chunks as a JSON array:
+  uv run --script tools/ff-parser.py path/to/source.ff
+
+  # Emit a single chunk (1-based) as a single Lesson JSON object:
+  uv run --script tools/ff-parser.py path/to/source.ff --chunk 1
+
+  # Write to a file instead of stdout:
+  uv run --script tools/ff-parser.py path/to/source.ff --chunk 1 --out lesson.json
+
+  # Print the Lesson JSON Schema and exit:
+  uv run --script tools/ff-parser.py --print-schema
+  ```
+
+  **Field mapping from `.ff` to `Lesson`:**
+
+  | `.ff` header field | `Lesson` field |
+  |---|---|
+  | `document` | `title` (chunk id appended as `/ <id>`) |
+  | `description` | `description` |
+  | `data.language` | `lang` |
+  | `data.script` | `script` |
+  | `translation.language` | `translation_lang` |
+  | `translation.script` | `translation_script` |
+
+  **Vocabulary items:** `phrase.text` → `headword`; `phrase.grammar.text` → `grammar`; `phrase.transcription` → `transcription`; `translations` joined with `"; "` → `translation`; `notes` joined with `"; "` → `notes`.
+
+  **Dialog body:** The raw `@Speaker:` / `--:` / indented-body format is parsed into a structured `DialogSource` with typed `DialogTurn` and `Narration` items, matching the phraseforge-web remark plugin conventions.
+
+  **Pipe output to an export tool:**
+  ```
+  uv run --script tools/ff-parser.py source.ff --chunk 1 \
+    | uv run --script ../phraseforge-web/tools/mdx-export.py --out lesson.mdx
+  ```

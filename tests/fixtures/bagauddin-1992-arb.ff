@@ -1,0 +1,35 @@
+document: bagauddin-1992
+type: vocabulary
+description: Bagauddin 1992
+data:
+  language: arb
+  script: arab
+translation:
+  language: pol
+  script: latn
+
+=== 1 ===
+
+هُوَ = on
+هُمْ = oni
+أَنْتَ = ty
+أَنْتُمْ = wy
+أَنَا = ja
+نَحْنُ = my
+كَبِيرٌ {sg} = duży
+كِبَارٌ {pl} = duzi
+صَغِيرٌ {sg} = mały
+صِغَارٌ {pl} = mali
+
+=== 2 ===
+
+هِىَ = ona
+هُنَّ = one
+اَنْتِ = ty
+اَنْتُنَّ = wy
+اَنَا = ja
+نَحْنُ = my
+كَبِيرَةٌ {sg} = duża
+كَبِيرَاتٌ {pl} = duże
+صَغِيرَةٌ {sg} = mała
+صَغِيرَاتٌ {pl} = małe

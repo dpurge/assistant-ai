@@ -39,7 +39,7 @@
 
 #Models(title: "Modele")[
 {%- for m in model_entries %}
-  - {{ m.pattern | content_escape }}{% if m.transcription %} [{{ m.transcription | content_escape }}]{% endif %} = {{ m.translation | content_escape }}
+  - {{ m.pattern | content_escape }}{% if m.transcription %} [{{ m.transcription | content_escape }}]{% endif %} = {{ m.translation | content_escape }}{% if m.notes %} ({{ m.notes | content_escape }}){% endif %}
 {%- endfor %}
 ]
 {%- endif %}
@@ -69,7 +69,21 @@
   {{ lesson.transcription | trim | content_escape }}
 ]
 {%- endif %}
-{%- if lesson.translation and lesson.translation | trim %}
+{%- if lesson.translation_dialog and lesson.translation_dialog.items %}
+
+#Dialog(title: "Tłumaczenie")[
+{%- for item in lesson.translation_dialog.items %}
+{%- if item.kind == "turn" %}
+{%- set body = item.paragraphs | join(' ') %}
+{%- if body %}
+  - {% if item.speaker %}{{ item.speaker | content_escape }}: {% else %}— {% endif %}{{ body | content_escape }}
+{%- endif %}
+{%- elif item.kind == "narration" and item.text %}
+  - {{ item.text | content_escape }}
+{%- endif %}
+{%- endfor %}
+]
+{%- elif lesson.translation and lesson.translation | trim %}
 
 #Text(title: "Tłumaczenie")[
   {{ lesson.translation | trim | content_escape }}

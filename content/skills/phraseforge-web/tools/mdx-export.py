@@ -101,8 +101,15 @@ def render(lesson: Lesson) -> str:
     dialog_body = ""
     if lesson.source and lesson.source.kind == "dialog":
         dialog_body = _format_dialog_body(lesson.source.items)
+    dialog_translation_body = ""
+    if lesson.translation_dialog and lesson.translation_dialog.items:
+        dialog_translation_body = _format_dialog_body(lesson.translation_dialog.items)
     template = _env().get_template("lesson.mdx.j2")
-    return template.render(lesson=lesson, dialog_body=dialog_body)
+    return template.render(
+        lesson=lesson,
+        dialog_body=dialog_body,
+        dialog_translation_body=dialog_translation_body,
+    )
 
 
 def main() -> int:

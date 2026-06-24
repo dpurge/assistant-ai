@@ -1,0 +1,35 @@
+document: frequency
+type: vocabulary
+description: Frequency vocabulary
+data:
+  language: deu
+  script: latn
+translation:
+  language: eng
+  script: latn
+
+=== 1 ===
+
+sein {verb} = to be
+Sie {pronoun} = you (formal)
+auch {conjunction} = also; too
+haben {verb} = to have
+nur {adverb} = only; just
+werden {verb} = to become; to get
+können {verb} = to be able to; can
+da {adverb} = there; since; because
+dann {adverb} = then
+schon {adverb} = already; yet
+
+=== 2 ===
+
+mehr {adjective} = more
+mal {adverb} = once; just
+das Mal {noun} = time
+hier {adverb} = here
+immer {adverb} = always
+jetzt {adverb} = now
+wieder {adverb} = again
+kein {adjective} = no
+all {adjective} = all
+sehr {adverb} = very
