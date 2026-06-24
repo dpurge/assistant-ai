@@ -1,3 +1,6 @@
+# /// script
+# requires-python = ">=3.11"
+# ///
 """Bump the version in plugins/claude/.claude-plugin/plugin.json.
 
 Usage:

@@ -1,3 +1,6 @@
+# /// script
+# requires-python = ">=3.11"
+# ///
 """Install: build the target zip then unpack it into the install directory.
 
 Usage:
@@ -16,7 +19,6 @@ only this plugin's skills are touched.
 from __future__ import annotations
 
 import os
-import shutil
 import sys
 import zipfile
 
@@ -26,6 +28,7 @@ from _common import (
     installed_owned_skills,
     load_version,
     looks_like_claude_install,
+    rmtree,
     validate_target,
     zip_path_for,
 )
@@ -45,12 +48,12 @@ def main(argv: list[str]) -> int:
     if cfg["shared_install_dir"]:
         # opencode / pi: leave unrelated skills alone; replace ours.
         for our in installed_owned_skills(install_dir):
-            shutil.rmtree(our)
+            rmtree(our)
     else:
         # claude: exclusive dir.
         if install_dir.exists() and any(install_dir.iterdir()):
             if looks_like_claude_install(install_dir) or force:
-                shutil.rmtree(install_dir)
+                rmtree(install_dir)
             else:
                 sys.stderr.write(
                     f"refusing to install into non-empty, unrelated dir {install_dir}\n"

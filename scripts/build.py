@@ -1,3 +1,6 @@
+# /// script
+# requires-python = ">=3.11"
+# ///
 """Build distributable zip archives for one or all assistant-ai targets.
 
 Usage:

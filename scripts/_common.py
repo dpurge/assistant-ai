@@ -5,6 +5,7 @@ from __future__ import annotations
 import functools
 import json
 import os
+import shutil
 import sys
 from pathlib import Path
 
@@ -56,6 +57,17 @@ SHARED_BY_SKILL: dict[str, list[str]] = {
     "phraseforge-anki": ["lesson_schema.py"],
     "phraseforge-web": ["lesson_schema.py"],
 }
+
+
+def rmtree(path: Path) -> None:
+    """shutil.rmtree that clears read-only bits before deletion (required on Windows)."""
+    import stat
+
+    def _on_error(func, p, exc_info):
+        os.chmod(p, stat.S_IWRITE)
+        func(p)
+
+    shutil.rmtree(path, onerror=_on_error)
 
 
 def load_version() -> str:

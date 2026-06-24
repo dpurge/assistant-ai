@@ -1,3 +1,6 @@
+# /// script
+# requires-python = ">=3.11"
+# ///
 """Uninstall: remove this plugin's skills from the install directory.
 
 Usage:
@@ -14,13 +17,13 @@ like ours.
 from __future__ import annotations
 
 import os
-import shutil
 import sys
 
 from _common import (
     install_dir_for,
     installed_owned_skills,
     looks_like_claude_install,
+    rmtree,
     validate_target,
 )
 
@@ -42,7 +45,7 @@ def main(argv: list[str]) -> int:
     if cfg["shared_install_dir"]:
         removed = [p.name for p in installed_owned_skills(install_dir)]
         for p in installed_owned_skills(install_dir):
-            shutil.rmtree(p)
+            rmtree(p)
         if removed:
             print(
                 f"uninstalled assistant-{target}: removed "
@@ -61,9 +64,8 @@ def main(argv: list[str]) -> int:
                 f"set ASSISTANT_FORCE=1 to override\n"
             )
             return 1
-        shutil.rmtree(install_dir)
+        rmtree(install_dir)
         print(f"uninstalled assistant-{target}: removed {install_dir}")
-
     return 0
 
 
