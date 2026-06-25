@@ -95,11 +95,11 @@ Follow these steps in order. Don't skip.
 9. **Compose transcription** if the script is non-Latin (`arab`, `hans`, `jpan`, `kore`, `hebr`, etc.) — using the transcription system the language skill specifies.
 10. **Compose questions** (optional) — open-ended comprehension prompts in the foreign language.
 11. **Compose exercises** — at least four, mixing types. Always include translation, fill-gaps, word-order, and multiple-choice; add matching, true-false, open-answer when the text supports them.
-12. **Hand off to the output skill the user named.** Default: `phraseforge-web` (MDX). Other options: `phraseforge-anki` (flashcards), `phraseforge-typst` (PDF). The output skill owns the file path, format, and rendering details. All three output skills consume the **same Lesson JSON shape** — build the JSON once and route to whichever output the user asked for.
+12. **Hand off to the output skill the user named.** Default: `phraseforge-web` (MDX). Other options: `phraseforge-anki` (flashcards), `phraseforge-typst` (PDF). The output skill owns the file path, format, and rendering details. All three output skills consume the **same Lesson JSON shape** — build the JSON once and route to whichever output the user asked for. **The output skill MUST write the file to disk and verify it exists. Printing the content to chat instead of saving it loses the lesson permanently.**
 
 ## Output
 
-You don't write the lesson file yourself — the output skill does. After it returns, reply with a single short sentence naming the file(s) authored. Don't print the lesson content back to the user.
+You don't write the lesson file yourself — the output skill does. After it returns, reply with a single short sentence naming the file(s) authored and their size from `ls -lh`. **Never print the lesson content back to the user — if the file was not saved, that is a failure, not a success.**
 
 ## Constraints
 

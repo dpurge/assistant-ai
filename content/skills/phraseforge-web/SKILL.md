@@ -73,7 +73,7 @@ Grammar tags follow `phraseforge-core/references/vocabulary.md`. The canonical t
 2. Apply the matching `phraseforge-lang-<iso>` for per-language conventions.
 3. **Build the lesson JSON object** matching the schema in `references/lesson.schema.json` (same shape as `phraseforge-typst` and `phraseforge-anki` consume). Required: `title`, `lang`; common optional: `script`, `date`, `description`, `vocabulary`, `models`, `source`, `transcription`, `translation`, `questions`, `exercises`.
 4. **Pick the file path** per `references/lesson-file.md`. List the directory first to find a free letter for the day. Create the level directory if it doesn't exist; don't invent a `_category_.json`.
-5. **Run `mdx-export.py`** to render the JSON as MDX:
+5. **Write the file to disk — this step is MANDATORY and must not be skipped.** Use the Write tool directly with the rendered MDX content. Alternatively run `mdx-export.py` with `--out`:
    ```bash
    echo '<lesson-json>' | uv run --script tools/mdx-export.py --out <full-path>.mdx
    ```
@@ -81,7 +81,9 @@ Grammar tags follow `phraseforge-core/references/vocabulary.md`. The canonical t
    ```bash
    uv run --script tools/mdx-export.py --in lesson.json --out <full-path>.mdx
    ```
-6. If the user requested an **English mirror**, build a second JSON with Polish strings translated to English and `lang: "eng"` for the translation block, then render to the i18n mirror path per `references/english-i18n.md`.
+   **NEVER output the MDX content to chat instead of writing it.** Printing to stdout loses the lesson permanently.
+6. **Verify** the file was written: run `ls -lh <full-path>.mdx` and confirm the size is non-zero. If the file is missing or empty, write it immediately using the Write tool.
+7. If the user requested an **English mirror**, build a second JSON with Polish strings translated to English and `lang: "eng"` for the translation block, then render to the i18n mirror path per `references/english-i18n.md`.
 
 ## Tool
 
@@ -102,7 +104,7 @@ PEP-723 deps: `pydantic>=2.6`, `jinja2>=3.1` (cached after first run).
 
 ## Output
 
-The tool writes a single `.mdx` file (plus an i18n mirror if you render one). Reply with a one-line confirmation of the file path(s). Don't print the lesson content back to the user.
+The tool writes a single `.mdx` file (plus an i18n mirror if you render one). Reply with a one-line confirmation of the file path(s) and the `ls -lh` size. **Never print the lesson content back to the user — printing instead of saving loses the work permanently.**
 
 ## Constraints
 
