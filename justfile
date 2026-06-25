@@ -28,7 +28,7 @@ clean:
 
 # Run the pytest suite over the export tools and shared schema.
 test:
-    uv run --with pytest pytest tests/ -v
+    uv run --with pytest --with pydantic pytest tests/ -v
 
 # Bump the version in plugin.json (accepts `0.2.0` or `v0.2.0`).
 # Prints the git commit/tag/push commands to follow.
