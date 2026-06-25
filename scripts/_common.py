@@ -53,6 +53,7 @@ TARGETS = {
 # next to that skill's tools/ at build time. Lets multiple skills share a single
 # canonical source file without symlinks or runtime imports across skills.
 SHARED_BY_SKILL: dict[str, list[str]] = {
+    "phraseforge-core": ["lesson_schema.py"],
     "phraseforge-typst": ["lesson_schema.py"],
     "phraseforge-anki": ["lesson_schema.py"],
     "phraseforge-web": ["lesson_schema.py"],
