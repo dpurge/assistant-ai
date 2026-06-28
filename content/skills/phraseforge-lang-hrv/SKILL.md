@@ -28,12 +28,12 @@ kuca {N f} = dom
 grad {N m in} = miasto
 dijete {N n} = dziecko
 
-govoriti {V impf} = mowic
-vidjeti {V impf irreg} = widziec
-biti {V irreg} = byc
-imati {V irreg} = miec
+govoriti {V impf} = mowić
+vidjeti {V impf irreg} = widzieć
+biti {V irreg} = być
+imati {V irreg} = mieć
 
-mali {Adj} = maly
+mali {Adj} = mały
 brzo {Adv} = szybko
 ```
 
