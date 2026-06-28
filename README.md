@@ -105,7 +105,7 @@ No code changes required.
 | **OpenCode** | original `opencode-ai/opencode` (archived) or a community fork — **not Crush** |
 | **Pi** | [earendil-works/pi](https://github.com/earendil-works/pi), MIT — filesystem-only skill discovery |
 
-All three consume the [Agent Skills standard](https://agentskills.io/specification) (`SKILL.md` with YAML frontmatter); the content layer is bit-for-bit identical across them. **Pi**'s TypeScript extension mechanism is out of scope — we ship Python tools.
+All three consume the [Agent Skills standard](https://agentskills.io/specification) (`SKILL.md` with YAML frontmatter); the content layer is bit-for-bit identical across them. **Pi** additionally ships the TypeScript extensions and themes under `plugins/pi/` — Pi loads `extensions/*.ts` directly via jiti (no build step) and `themes/*.json` from `~/.pi/agent/`.
 
 ---
 
@@ -258,16 +258,19 @@ The release workflow at `.github/workflows/release.yml` triggers on `v*` tag pus
 |---|---|---|---|
 | `claude` | `~/.claude/plugins/assistant/` | `ASSISTANT_CLAUDE_DIR` | **exclusive** — install dir wiped on reinstall |
 | `opencode` | `~/.config/opencode/skills/` | `ASSISTANT_OPENCODE_DIR` | **shared** — only owned skills are touched |
-| `pi` | `~/.pi/agent/skills/` | `ASSISTANT_PI_DIR` | **shared** — only owned skills are touched |
+| `pi` | `~/.pi/agent/` | `ASSISTANT_PI_DIR` | **shared** — only owned skills/extensions/themes are touched |
+
+For `pi`, `ASSISTANT_PI_DIR` points at the agent **base** dir; the bundle unpacks into `skills/`, `extensions/`, and `themes/` beneath it.
 
 `ASSISTANT_FORCE=1` overrides safety checks (Claude only — overwrites a non-empty install dir that doesn't look like a previous assistant install).
 
 ### Built zip layouts
 
-`just build` emits two zips:
+`just build` emits three zips:
 
 - **`assistant-claude-<ver>.zip`** — full Claude Code plugin (manifest + `skills/<name>/` prefix).
-- **`assistant-skills-<ver>.zip`** — bare Agent Skills bundle (each skill at top level, no manifest). Used by both `opencode` and `pi` installs; the content is identical, only the install destination differs.
+- **`assistant-skills-<ver>.zip`** — bare Agent Skills bundle (each skill at top level, no manifest). Used by the `opencode` install.
+- **`assistant-pi-<ver>.zip`** — self-contained Pi bundle: `skills/<name>/` plus the `extensions/` and `themes/` trees from `plugins/pi/`. Unpacks into the `~/.pi/agent/` base dir.
 
 ### Local knowledge base (RAG)
 

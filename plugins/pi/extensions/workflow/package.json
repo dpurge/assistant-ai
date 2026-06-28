@@ -1,0 +1,14 @@
+{
+  "name": "assistant-workflow-extension",
+  "private": true,
+  "description": "Sample Pi workflow-harness extension: slash command, validated state machine, simulated or live model.",
+  "type": "module",
+  "pi": {
+    "extensions": ["./index.ts"]
+  },
+  "dependencies": {
+    "@earendil-works/pi-coding-agent": "*",
+    "@earendil-works/pi-ai": "*",
+    "typebox": "*"
+  }
+}

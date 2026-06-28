@@ -21,8 +21,8 @@ import sys
 
 from _common import (
     install_dir_for,
-    installed_owned_skills,
     looks_like_claude_install,
+    owned_install_paths,
     rmtree,
     validate_target,
 )
@@ -43,19 +43,26 @@ def main(argv: list[str]) -> int:
         return 0
 
     if cfg["shared_install_dir"]:
-        removed = [p.name for p in installed_owned_skills(install_dir)]
-        for p in installed_owned_skills(install_dir):
-            rmtree(p)
+        owned = owned_install_paths(target, install_dir)
+        removed = [p.relative_to(install_dir).as_posix() for p in owned]
+        for p in owned:
+            rmtree(p) if p.is_dir() else p.unlink()
+        # Prune now-empty owned component dirs (e.g. extensions/, themes/); never
+        # the base dir or anything still holding the user's content.
+        for entry in cfg.get("extra_content", []):
+            d = install_dir / entry["arc_prefix"].rstrip("/")
+            if d != install_dir and d.exists() and not any(d.iterdir()):
+                d.rmdir()
         if removed:
             print(
                 f"uninstalled assistant-{target}: removed "
-                f"{len(removed)} skill(s) from {install_dir}"
+                f"{len(removed)} item(s) from {install_dir}"
             )
             for r in removed:
                 print(f"  - {r}")
         else:
             print(
-                f"nothing to uninstall: no owned skills found in {install_dir}"
+                f"nothing to uninstall: no owned content found in {install_dir}"
             )
     else:
         if not looks_like_claude_install(install_dir) and not force:

@@ -57,6 +57,26 @@ def test_mdx_golden(fixture: str):
     )
 
 
+def test_mdx_grammar_section():
+    """The optional `grammar` field renders as a `## Gramatyka` section."""
+    fixture_path = FIXTURES / "diana-grammar.json"
+    golden_path = GOLDEN / "diana-grammar.mdx"
+    result = run_tool(MDX_TOOL, "--in", str(fixture_path))
+    assert result.returncode == 0, f"stderr: {result.stderr}"
+    assert "## Gramatyka" in result.stdout
+    assert result.stdout == golden_path.read_text(encoding="utf-8"), (
+        f"mdx-export grammar drift — regenerate golden with:\n"
+        f"  uv run --script {MDX_TOOL} --in {fixture_path} --out {golden_path}"
+    )
+
+
+def test_mdx_no_grammar_section_when_absent():
+    """No grammar field ⇒ no Gramatyka section (backward-compatible)."""
+    result = run_tool(MDX_TOOL, stdin='{"title":"x","lang":"lat"}')
+    assert result.returncode == 0
+    assert "Gramatyka" not in result.stdout
+
+
 # --- validation error tests -------------------------------------------------
 
 @pytest.mark.parametrize("tool", [TYPST_TOOL, ANKI_TOOL, MDX_TOOL])

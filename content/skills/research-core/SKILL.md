@@ -73,8 +73,8 @@ Invoke every tool via `uv run --script` so its [PEP 723](https://peps.python.org
 - `tools/rag-index.py` — build the FAISS index from `$ASSISTANT_KNOWLEDGE_DIR` (default `~/.assistant/knowledge/`). Deps: `fastembed`, `faiss-cpu`, `pyyaml`, `numpy`. See `references/rag.md`.
 - `tools/rag-query.py` — search the index. Same deps. Exit `0` if hits ≥ `--min-score`; exit `1` if not (chain into fallback via shell `||`).
 
-**Stubs (no deps yet):**
+**Real (stdlib only, key-free public APIs):**
 
-- `tools/wikipedia-search.py` — Wikipedia query helper.
-- `tools/arxiv-search.py` — arXiv query helper.
-- `tools/web-search.py` — web-search wrapper (delegate to host's WebSearch when available).
+- `tools/wikipedia-search.py` — MediaWiki search + REST summary → `[{title,url,summary,lang}]`.
+- `tools/arxiv-search.py` — arXiv Atom API → `[{id,title,authors,abstract,published,pdf_url}]`.
+- `tools/web-search.py` — DuckDuckGo HTML (best-effort, no key) → `[{url,title,snippet}]`; returns `[]` if blocked.

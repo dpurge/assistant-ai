@@ -71,7 +71,7 @@ Grammar tags follow `phraseforge-core/references/vocabulary.md`. The canonical t
 
 1. Get the conceptual lesson content from `phraseforge-core` (adapted text, vocabulary, models, translation, transcription, questions, exercises).
 2. Apply the matching `phraseforge-lang-<iso>` for per-language conventions.
-3. **Build the lesson JSON object** matching the schema in `references/lesson.schema.json` (same shape as `phraseforge-typst` and `phraseforge-anki` consume). Required: `title`, `lang`; common optional: `script`, `date`, `description`, `vocabulary`, `models`, `source`, `transcription`, `translation`, `questions`, `exercises`.
+3. **Build the lesson JSON object** matching the schema in `references/lesson.schema.json` (same shape as `phraseforge-typst` and `phraseforge-anki` consume). Required: `title`, `lang`; common optional: `script`, `date`, `description`, `vocabulary`, `models`, `source`, `transcription`, `translation`, `grammar`, `questions`, `exercises`.
 4. **Pick the file path** per `references/lesson-file.md`. List the directory first to find a free letter for the day. Create the level directory if it doesn't exist; don't invent a `_category_.json`.
 5. **Write the file to disk — this step is MANDATORY and must not be skipped.** Use the Write tool directly with the rendered MDX content. Alternatively run `mdx-export.py` with `--out`:
    ```bash
@@ -126,6 +126,7 @@ Don't invent new components.
 - `references/models.md` — models code-fence format.
 - `references/text.md` — `<Text>` component (prose), covers source, transcription, translation.
 - `references/dialog.md` — `dialog` code fence (conversations), same `as` attribute.
+- `references/grammar.md` — optional `grammar` field → `## Gramatyka` section (Polish Markdown).
 - `references/questions.md` — `<Questions>` block for open-ended comprehension prompts.
 - `references/exercises.md` — all 7 exercise types and their components.
 - `assets/lesson-template.mdx` — copy-paste skeleton with placeholders.

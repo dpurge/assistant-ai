@@ -25,9 +25,9 @@ import zipfile
 import build as build_mod
 from _common import (
     install_dir_for,
-    installed_owned_skills,
     load_version,
     looks_like_claude_install,
+    owned_install_paths,
     rmtree,
     validate_target,
     zip_path_for,
@@ -46,9 +46,10 @@ def main(argv: list[str]) -> int:
     force = bool(os.environ.get("ASSISTANT_FORCE"))
 
     if cfg["shared_install_dir"]:
-        # opencode / pi: leave unrelated skills alone; replace ours.
-        for our in installed_owned_skills(install_dir):
-            rmtree(our)
+        # opencode / pi: leave the user's unrelated content alone; replace ours
+        # (owned skill dirs + owned extension/theme files).
+        for our in owned_install_paths(target, install_dir):
+            rmtree(our) if our.is_dir() else our.unlink()
     else:
         # claude: exclusive dir.
         if install_dir.exists() and any(install_dir.iterdir()):

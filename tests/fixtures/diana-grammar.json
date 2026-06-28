@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "title": "Bogini łowów Diana",
+  "lang": "lat",
+  "script": "latn",
+  "date": "2026-06-22",
+  "level": "a1",
+  "vocabulary": [
+    {"headword": "Diana", "grammar": "N f", "translation": "Diana"},
+    {"headword": "dea", "grammar": "N f", "translation": "bogini"}
+  ],
+  "source": {"kind": "text", "content": "Diana est dea silvarum et venationis."},
+  "translation": "Diana to bogini lasów i łowów.",
+  "grammar": "## Rzeczowniki\n\nŁacińskie rzeczowniki mają rodzaj. `dea` i `silva` są rodzaju żeńskiego (deklinacja I).",
+  "questions": ["Quis est Diana?"]
+}

@@ -64,6 +64,12 @@ description: {{ lesson.description | yaml_string }}
 
 </Text>
 {%- endif %}
+{%- if lesson.grammar and lesson.grammar | trim %}
+
+## Gramatyka
+
+{{ lesson.grammar | trim }}
+{%- endif %}
 {%- set qs = (lesson.questions or []) | select | list %}
 {%- if qs %}
 

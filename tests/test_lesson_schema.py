@@ -33,6 +33,12 @@ def test_minimal_lesson_has_defaults():
     assert lesson.vocabulary == []
     assert lesson.models == []
     assert lesson.exercises == []
+    assert lesson.grammar is None
+
+
+def test_grammar_field_accepts_markdown():
+    lesson = Lesson(title="x", lang="lat", grammar="## Gramatyka\n\ntreść")
+    assert lesson.grammar.startswith("## Gramatyka")
 
 
 def test_missing_title_fails():

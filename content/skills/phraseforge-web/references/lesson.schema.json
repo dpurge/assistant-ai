@@ -113,7 +113,7 @@
       "type": "object"
     },
     "ModelEntry": {
-      "description": "A model / phrase pattern.\n\n`pattern` is the foreign phrase. `translation` (required) is its Polish\ngloss; multiple senses separated by '; '. `transcription` is the romanized\nform, used for non-Latin scripts.",
+      "description": "A model / phrase pattern.\n\n`pattern` is the foreign phrase. `translation` (required) is its Polish\ngloss; multiple senses separated by '; '. `transcription` is the romanized\nform, used for non-Latin scripts. `notes` carries optional usage notes,\nmultiple notes joined with '; '.",
       "properties": {
         "pattern": {
           "title": "Pattern",
@@ -135,6 +135,18 @@
           ],
           "default": null,
           "title": "Transcription"
+        },
+        "notes": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Notes"
         }
       },
       "required": [
@@ -279,6 +291,32 @@
       "title": "Script",
       "type": "string"
     },
+    "translation_lang": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ISO 639-3 code of the translation language",
+      "title": "Translation Lang"
+    },
+    "translation_script": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "ISO 15924 script code of the translation language",
+      "title": "Translation Script"
+    },
     "level": {
       "anyOf": [
         {
@@ -380,6 +418,30 @@
       ],
       "default": null,
       "title": "Translation"
+    },
+    "translation_dialog": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/DialogSource"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null
+    },
+    "grammar": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "default": null,
+      "description": "Grammar block as Markdown prose (in the translation language).",
+      "title": "Grammar"
     },
     "questions": {
       "anyOf": [

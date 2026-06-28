@@ -40,12 +40,23 @@ TARGETS = {
         "zip_artifact": "skills",
     },
     "pi": {
-        "default_dir": "~/.pi/agent/skills",
+        # Self-contained bundle unpacked into the Pi agent base dir. The dir is
+        # shared (skills/, extensions/, themes/, settings.json may hold the
+        # user's own content), so only owned files are touched on (un)install.
+        # NOTE: ASSISTANT_PI_DIR now points at the base dir, not the skills dir.
+        "default_dir": "~/.pi/agent",
         "env": "ASSISTANT_PI_DIR",
         "include_manifest": False,
-        "skills_zip_prefix": "",
+        "skills_zip_prefix": "skills/",
         "shared_install_dir": True,
-        "zip_artifact": "skills",
+        "zip_artifact": "pi",
+        # Non-skill content roots (repo-relative src → arcname prefix). Pi loads
+        # extensions from extensions/*.ts (jiti, no build) and themes from
+        # themes/*.json.
+        "extra_content": [
+            {"src": "plugins/pi/extensions", "arc_prefix": "extensions/"},
+            {"src": "plugins/pi/themes", "arc_prefix": "themes/"},
+        ],
     },
 }
 
@@ -58,6 +69,18 @@ SHARED_BY_SKILL: dict[str, list[str]] = {
     "phraseforge-anki": ["lesson_schema.py"],
     "phraseforge-web": ["lesson_schema.py"],
 }
+
+
+def skip_file(p: Path) -> bool:
+    """Files we never want to ship in a zip or treat as owned content."""
+    name = p.name
+    if name.endswith(".pyc"):
+        return True
+    if "__pycache__" in p.parts:
+        return True
+    if name == ".DS_Store":
+        return True
+    return False
 
 
 def rmtree(path: Path) -> None:
@@ -121,11 +144,49 @@ def is_owned_skill_dir(p: Path) -> bool:
     return p.is_dir() and p.name in owned_skill_names() and (p / "SKILL.md").exists()
 
 
-def installed_owned_skills(install_dir: Path) -> list[Path]:
-    """List owned skill subdirs currently present under install_dir."""
-    if not install_dir.exists():
+def installed_owned_skills(skills_root: Path) -> list[Path]:
+    """List owned skill subdirs currently present directly under skills_root."""
+    if not skills_root.exists():
         return []
-    return sorted(p for p in install_dir.iterdir() if is_owned_skill_dir(p))
+    return sorted(p for p in skills_root.iterdir() if is_owned_skill_dir(p))
+
+
+def skills_install_root(target: str, install_dir: Path) -> Path:
+    """Dir that holds skill subdirs for this target.
+
+    Equals install_dir for targets with an empty skills_zip_prefix (opencode);
+    install_dir/skills for targets that nest skills under a prefix (pi).
+    """
+    prefix = TARGETS[target]["skills_zip_prefix"].rstrip("/")
+    return install_dir / prefix if prefix else install_dir
+
+
+def owned_files_under(src_root: Path) -> list[str]:
+    """Relative posix paths of all shippable files under a repo-relative src dir."""
+    if not src_root.exists():
+        return []
+    return sorted(
+        f.relative_to(src_root).as_posix()
+        for f in src_root.rglob("*")
+        if f.is_file() and not skip_file(f)
+    )
+
+
+def owned_install_paths(target: str, install_dir: Path) -> list[Path]:
+    """Existing install paths owned by this plugin for a shared-dir target.
+
+    Single source of truth for install/uninstall cleanup: owned skill dirs plus
+    each owned extension/theme file. Never includes the user's unrelated content.
+    """
+    cfg = TARGETS[target]
+    paths: list[Path] = list(installed_owned_skills(skills_install_root(target, install_dir)))
+    for entry in cfg.get("extra_content", []):
+        base = install_dir / entry["arc_prefix"].rstrip("/")
+        for rel in owned_files_under(REPO_ROOT / entry["src"]):
+            p = base / rel
+            if p.exists():
+                paths.append(p)
+    return paths
 
 
 def looks_like_claude_install(p: Path) -> bool:

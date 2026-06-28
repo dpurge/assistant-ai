@@ -110,5 +110,9 @@ class Lesson(BaseModel):
     transcription: str | None = None
     translation: str | None = None
     translation_dialog: DialogSource | None = None
+    grammar: str | None = Field(
+        None,
+        description="Grammar block as Markdown prose (in the translation language).",
+    )
     questions: list[str] | None = None
     exercises: list[Exercise] = Field(default_factory=list)

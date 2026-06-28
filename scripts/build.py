@@ -17,26 +17,16 @@ import zipfile
 from _common import (
     CLAUDE_MANIFEST,
     DIST_DIR,
+    REPO_ROOT,
     SHARED_BY_SKILL,
     SHARED_DIR,
     TARGETS,
     discover_skills,
     load_version,
+    skip_file as _skip_file,
     validate_target,
     zip_path_for,
 )
-
-
-def _skip_file(p) -> bool:
-    """Files we never want to ship in a zip."""
-    name = p.name
-    if name.endswith(".pyc"):
-        return True
-    if "__pycache__" in p.parts:
-        return True
-    if name == ".DS_Store":
-        return True
-    return False
 
 
 def build_one(target: str, version: str):
@@ -77,8 +67,25 @@ def build_one(target: str, version: str):
                 arc = f"{skills_prefix}{skill_dir.name}/tools/{shared_name}"
                 z.write(src, arcname=arc)
 
+        # Non-skill content (e.g. Pi extensions/themes), shipped verbatim.
+        extra_count = 0
+        for entry in cfg.get("extra_content", []):
+            src_root = REPO_ROOT / entry["src"]
+            if not src_root.exists():
+                sys.stderr.write(f"warning: extra content missing: {src_root}\n")
+                continue
+            for f in sorted(src_root.rglob("*")):
+                if not f.is_file() or _skip_file(f):
+                    continue
+                rel = f.relative_to(src_root).as_posix()
+                z.write(f, arcname=f"{entry['arc_prefix']}{rel}")
+                extra_count += 1
+
     size = zip_path.stat().st_size
-    print(f"built dist/{zip_path.name} ({size:,} bytes, {len(skills)} skill(s))")
+    extra = f", {extra_count} extra file(s)" if extra_count else ""
+    print(
+        f"built dist/{zip_path.name} ({size:,} bytes, {len(skills)} skill(s){extra})"
+    )
     return zip_path
 
 
