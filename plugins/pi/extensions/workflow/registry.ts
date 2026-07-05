@@ -12,8 +12,10 @@ import { SimulatedExecutor } from "./executor.ts";
 import type { Runtime, StepIO } from "./engine.ts";
 import { runWithUi } from "./harness.ts";
 import { buildDesignWorkflow, makeContext, renderMarkdown, type WorkflowContext } from "./workflows/design.ts";
+
 import { phraseforgeMdxWorkflow } from "./workflows/phraseforge-mdx.ts";
 import { researchTopicWorkflow } from "./workflows/research-topic.ts";
+import { workflow as phraseforgeText } from "./workflows/phraseforge-text.ts";
 
 export interface WorkflowDefinition {
   /** Dispatch key and command argument, e.g. "phraseforge-mdx". */
@@ -44,6 +46,7 @@ export const REGISTRY: WorkflowDefinition[] = [
   designWorkflow,
   phraseforgeMdxWorkflow,
   researchTopicWorkflow,
+  phraseforgeText,
 ];
 
 export function findWorkflow(name: string): WorkflowDefinition | undefined {
