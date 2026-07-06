@@ -26,7 +26,16 @@ export class PiStepExecutor implements StepExecutor {
     const { complete, getModel } = await import("@earendil-works/pi-ai/compat");
     const { Value } = await import("typebox/value");
 
-    const model = this.ctx.model ?? getModel("anthropic", "claude-opus-4-8");
+    const resolvedModel = (() => {
+      if (req.model != null) {
+        const slash = req.model.indexOf("/");
+        return slash !== -1
+          ? getModel(req.model.slice(0, slash), req.model.slice(slash + 1))
+          : getModel("anthropic", req.model);
+      }
+      return this.ctx.model ?? getModel("anthropic", "claude-haiku-4-5-20251001");
+    })();
+    const model = resolvedModel;
     const auth = await this.ctx.modelRegistry.getApiKeyAndHeaders(model);
     const authOpts = { apiKey: auth.apiKey, headers: auth.headers, env: auth.env };
     const tools = (req.tools ?? []).map((t) => ({
@@ -42,7 +51,12 @@ export class PiStepExecutor implements StepExecutor {
     for (let turn = 0; turn <= MAX_TOOL_TURNS; turn++) {
       const resp = await complete(
         model,
-        { systemPrompt: req.system, messages, tools: tools.length ? tools : undefined },
+        {
+          systemPrompt: req.system,
+          messages,
+          tools: tools.length ? tools : undefined,
+          ...(req.effort != null ? { effort: req.effort } : {}),
+        },
         authOpts,
       );
 

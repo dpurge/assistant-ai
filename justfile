@@ -30,6 +30,13 @@ clean:
 test:
     uv run --with pytest --with pydantic pytest tests/ -v
 
+# Evaluate skill prompt quality against any OpenAI-compatible model.
+# model: model name string, e.g. "gemma2:2b" or "claude-haiku-4-5-20251001"
+# base-url: base URL for OpenAI-compat API (default: local Ollama)
+# api-key: API key (any non-empty value works for local Ollama)
+eval-skills model="gemma2:2b" base-url="http://localhost:11434/v1" api-key="ollama":
+    uv run --script scripts/eval_skills.py --model {{model}} --base-url {{base-url}} --api-key {{api-key}}
+
 # Bump the version in plugin.json (accepts `0.2.0` or `v0.2.0`).
 # Prints the git commit/tag/push commands to follow.
 bump-version new_version:

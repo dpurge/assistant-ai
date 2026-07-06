@@ -38,7 +38,7 @@ def test_pi_zip_bundles_skills_extensions_and_themes(dist):
     zip_path = build_mod.build_one("pi", _common.load_version())
     names = _names(zip_path)
 
-    assert "extensions/research.ts" in names
+    assert "extensions/example.ts" in names
     # The workflow harness ships as a folder: a generic engine, a registry of
     # named workflows, and the per-workflow modules. The old workflow.md doc was
     # removed when it became a real extension.
@@ -69,7 +69,7 @@ def test_pi_install_layout_and_owned_only_cleanup(dist, tmp_path, monkeypatch):
     monkeypatch.setenv("ASSISTANT_PI_DIR", str(target_dir))
 
     assert install_mod.main(["pi"]) == 0
-    assert (target_dir / "extensions" / "research.ts").is_file()
+    assert (target_dir / "extensions" / "example.ts").is_file()
     assert (target_dir / "themes" / "dpurge-dark-default.json").is_file()
     assert any((target_dir / "skills").iterdir())
 
@@ -82,13 +82,13 @@ def test_pi_install_layout_and_owned_only_cleanup(dist, tmp_path, monkeypatch):
 
     # Reinstall replaces ours, preserves theirs.
     assert install_mod.main(["pi"]) == 0
-    assert (target_dir / "extensions" / "research.ts").is_file()
+    assert (target_dir / "extensions" / "example.ts").is_file()
     assert mine_ext.is_file()
     assert (mine_skill / "SKILL.md").is_file()
 
     # Uninstall removes only ours.
     assert uninstall_mod.main(["pi"]) == 0
-    assert not (target_dir / "extensions" / "research.ts").exists()
+    assert not (target_dir / "extensions" / "example.ts").exists()
     assert not (target_dir / "themes" / "dpurge-dark-default.json").exists()
     assert mine_ext.is_file()
     assert (mine_skill / "SKILL.md").is_file()

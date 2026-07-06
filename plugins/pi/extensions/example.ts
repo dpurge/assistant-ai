@@ -11,7 +11,7 @@ Do not use web search, respond from your own knowledge.
 `;
 
 export default function (pi: ExtensionAPI) {
-  pi.registerCommand("test-research", {
+  pi.registerCommand("example", {
     description: "Test whether I can define a command",
     handler: async (args: any, ctx: any) => {
         // await ctx.waitForIdle();
@@ -25,7 +25,7 @@ export default function (pi: ExtensionAPI) {
             pi.sendUserMessage(prompt);
         } else {
             pi.sendUserMessage(prompt, { deliverAs: "followUp" });
-            ctx.ui.notify("Queued /test-research as a follow-up", "info");
+            ctx.ui.notify("Queued /example as a follow-up", "info");
         }
     },
   });

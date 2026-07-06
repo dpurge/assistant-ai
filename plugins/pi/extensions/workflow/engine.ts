@@ -83,6 +83,10 @@ export interface ModelStep<Ctx> {
   tools?: ToolSpec[];
   /** Expected output schema; when set, the executor returns validated JSON. */
   outputSchema?: object;
+  /** Override the model for this step (e.g. "anthropic/claude-haiku-4-5-20251001"). */
+  model?: string;
+  /** Effort level hint passed to the executor (e.g. "low" | "medium" | "high"). */
+  effort?: string;
   /**
    * Context key under which the produced value is stored. Omit to MERGE the
    * produced object into ctx (`{...ctx, ...value}`) — handy when a step returns
@@ -172,6 +176,8 @@ async function runModelStep<Ctx extends RetryableContext>(
     prompt: step.prompt(view) + feedback,
     tools: step.tools,
     outputSchema: step.outputSchema,
+    model: step.model,
+    effort: step.effort,
   };
   const res = await runtime.executor.run(req);
   if (!res.ok) return res;

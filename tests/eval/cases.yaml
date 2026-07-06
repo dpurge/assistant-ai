@@ -1,0 +1,269 @@
+# Skill evaluation test manifest.
+# paths relative to project root
+skill_root: content/skills
+
+cases:
+  # ── TEMPLATE: phraseforge language skills ──────────────────────────
+  - id: "phraseforge-lang-{code}"
+    template: true
+    skills:
+      - phraseforge-core
+      - "phraseforge-lang-{code}"
+    prompt: |
+      Extract a vocabulary list from the text following the language skill's rules.
+      Each entry: headword (dictionary form), grammar tag, Polish translation (multiple
+      senses joined with '; '), and transcription for non-Latin scripts.
+      Output JSON only matching this shape: {"title": "...", "lang": "...", "vocabulary": [...], "models": [...]}
+    message: |
+      Create a vocabulary list for basic greetings in {language_name}: hello, goodbye,
+      thank you, please, yes, no. Follow phraseforge-core and phraseforge-lang-{code} skill instructions exactly.
+    golden: '{"title": "Basic Greetings", "lang": "{code}", "vocabulary": [...3 entries...], "models": [...1 entry...]}'
+    variables:
+      - code: apc
+        language_name: "Levantine Arabic"
+        golden: '{"title":"Basic Greetings","lang":"apc","vocabulary":[{"headword":"مَرْحَبَا","grammar":"Interj","transcription":"marḥabā","translation":"cześć"},{"headword":"مَعَ السَّلَامَة","grammar":"Phrase","transcription":"maʿa s-salāma","translation":"do widzenia"},{"headword":"شُكْرًا","grammar":"Interj","transcription":"šukran","translation":"dziękuję"}],"models":[{"pattern":"كِيفَك؟","transcription":"kīfak?","translation":"Jak się masz?"}]}'
+      - code: arb
+        language_name: "Modern Standard Arabic"
+        golden: '{"title":"Basic Greetings","lang":"arb","vocabulary":[{"headword":"السَّلَامُ عَلَيْكُمْ","grammar":"Phrase","transcription":"as-salāmu ʿalaykum","translation":"pokój z wami"},{"headword":"شُكْرًا","grammar":"Interj","transcription":"šukran","translation":"dziękuję"},{"headword":"نَعَمْ","grammar":"Part","transcription":"naʿam","translation":"tak"}],"models":[{"pattern":"كَيْفَ حَالُكَ؟","transcription":"kayfa ḥāluka?","translation":"Jak się masz?"}]}'
+      - code: arz
+        language_name: "Egyptian Arabic"
+        golden: '{"title":"Basic Greetings","lang":"arz","vocabulary":[{"headword":"أَهْلًا","grammar":"Interj","transcription":"ahlan","translation":"cześć"},{"headword":"مَعَ السَّلَامَة","grammar":"Phrase","transcription":"maʿa s-salāma","translation":"do widzenia"},{"headword":"شُكْرًا","grammar":"Interj","transcription":"šukran","translation":"dziękuję"}],"models":[{"pattern":"إِزَّيَّك؟","transcription":"izzayyak?","translation":"Jak się masz?"}]}'
+      - code: aze
+        language_name: "Azerbaijani"
+        golden: '{"title":"Basic Greetings","lang":"aze","vocabulary":[{"headword":"salam","grammar":"Interj","translation":"cześć"},{"headword":"xudahafiz","grammar":"Interj","translation":"do widzenia"},{"headword":"təşəkkür edirəm","grammar":"Phrase","translation":"dziękuję"}],"models":[{"pattern":"Necəsən?","translation":"Jak się masz?"}]}'
+      - code: bul
+        language_name: "Bulgarian"
+        golden: '{"title":"Basic Greetings","lang":"bul","vocabulary":[{"headword":"здравей","grammar":"Interj","translation":"cześć"},{"headword":"довиждане","grammar":"Interj","translation":"do widzenia"},{"headword":"благодаря","grammar":"V","translation":"dziękuję"}],"models":[{"pattern":"Как си?","translation":"Jak się masz?"}]}'
+      - code: ces
+        language_name: "Czech"
+        golden: '{"title":"Basic Greetings","lang":"ces","vocabulary":[{"headword":"ahoj","grammar":"Interj","translation":"cześć"},{"headword":"nashledanou","grammar":"Interj","translation":"do widzenia"},{"headword":"děkuji","grammar":"V","translation":"dziękuję"}],"models":[{"pattern":"Jak se máš?","translation":"Jak się masz?"}]}'
+      - code: cmn-hans
+        language_name: "Mandarin Chinese (Simplified)"
+        golden: '{"title":"Basic Greetings","lang":"cmn-hans","vocabulary":[{"headword":"你好","grammar":"Phrase","transcription":"nǐ hǎo","translation":"cześć"},{"headword":"再见","grammar":"Phrase","transcription":"zàijiàn","translation":"do widzenia"},{"headword":"谢谢","grammar":"Phrase","transcription":"xièxie","translation":"dziękuję"}],"models":[{"pattern":"你好吗？","transcription":"nǐ hǎo ma?","translation":"Jak się masz?"}]}'
+      - code: cmn-hant
+        language_name: "Mandarin Chinese (Traditional)"
+        golden: '{"title":"Basic Greetings","lang":"cmn-hant","vocabulary":[{"headword":"你好","grammar":"Phrase","transcription":"nǐ hǎo","translation":"cześć"},{"headword":"再見","grammar":"Phrase","transcription":"zàijiàn","translation":"do widzenia"},{"headword":"謝謝","grammar":"Phrase","transcription":"xièxiè","translation":"dziękuję"}],"models":[{"pattern":"你好嗎？","transcription":"nǐ hǎo ma?","translation":"Jak się masz?"}]}'
+      - code: dan
+        language_name: "Danish"
+        golden: '{"title":"Basic Greetings","lang":"dan","vocabulary":[{"headword":"hej","grammar":"Interj","translation":"cześć"},{"headword":"farvel","grammar":"Interj","translation":"do widzenia"},{"headword":"tak","grammar":"Interj","translation":"dziękuję"}],"models":[{"pattern":"Hvordan har du det?","translation":"Jak się masz?"}]}'
+      - code: deu
+        language_name: "German"
+        golden: '{"title":"Basic Greetings","lang":"deu","vocabulary":[{"headword":"Hallo","grammar":"Interj","translation":"cześć"},{"headword":"Auf Wiedersehen","grammar":"Phrase","translation":"do widzenia"},{"headword":"danke","grammar":"Adv","translation":"dziękuję"},{"headword":"bitte","grammar":"Adv","translation":"proszę"},{"headword":"ja","grammar":"Part","translation":"tak"},{"headword":"nein","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Wie geht es Ihnen?","translation":"Jak się Pani/Pan miewa?"}]}'
+      - code: ell
+        language_name: "Modern Greek"
+        golden: '{"title":"Basic Greetings","lang":"ell","vocabulary":[{"headword":"γεια σου","grammar":"Phrase","translation":"cześć"},{"headword":"αντίο","grammar":"Interj","translation":"do widzenia"},{"headword":"ευχαριστώ","grammar":"V","translation":"dziękuję"}],"models":[{"pattern":"Πώς είσαι;","translation":"Jak się masz?"}]}'
+      - code: eng
+        language_name: "English"
+        golden: '{"title":"Basic Greetings","lang":"eng","vocabulary":[{"headword":"hello","grammar":"Interj","translation":"cześć"},{"headword":"goodbye","grammar":"Interj","translation":"do widzenia"},{"headword":"thank you","grammar":"Phrase","translation":"dziękuję"},{"headword":"please","grammar":"Adv","translation":"proszę"},{"headword":"yes","grammar":"Part","translation":"tak"},{"headword":"no","grammar":"Part","translation":"nie"}],"models":[{"pattern":"How are you?","translation":"Jak się masz?"}]}'
+      - code: epo
+        language_name: "Esperanto"
+        golden: '{"title":"Basic Greetings","lang":"epo","vocabulary":[{"headword":"saluton","grammar":"Interj","translation":"cześć"},{"headword":"ĝis revido","grammar":"Phrase","translation":"do widzenia"},{"headword":"dankon","grammar":"Interj","translation":"dziękuję"},{"headword":"bonvolu","grammar":"Adv","translation":"proszę"}],"models":[{"pattern":"Kiel vi fartas?","translation":"Jak się masz?"}]}'
+      - code: fas
+        language_name: "Persian"
+        golden: '{"title":"Basic Greetings","lang":"fas","vocabulary":[{"headword":"سلام","grammar":"Interj","transcription":"salām","translation":"cześć"},{"headword":"خداحافظ","grammar":"Interj","transcription":"xodāhāfez","translation":"do widzenia"},{"headword":"ممنون","grammar":"Interj","transcription":"mamnun","translation":"dziękuję"}],"models":[{"pattern":"حال شما چطور است؟","transcription":"ḥāl-e šomā četour ast?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: fin
+        language_name: "Finnish"
+        golden: '{"title":"Basic Greetings","lang":"fin","vocabulary":[{"headword":"hei","grammar":"Interj","translation":"cześć"},{"headword":"näkemiin","grammar":"Interj","translation":"do widzenia"},{"headword":"kiitos","grammar":"Interj","translation":"dziękuję"},{"headword":"ole hyvä","grammar":"Phrase","translation":"proszę"}],"models":[{"pattern":"Miten voit?","translation":"Jak się masz?"}]}'
+      - code: fra
+        language_name: "French"
+        golden: "{\"title\":\"Basic Greetings\",\"lang\":\"fra\",\"vocabulary\":[{\"headword\":\"bonjour\",\"grammar\":\"Interj\",\"translation\":\"dzień dobry\"},{\"headword\":\"au revoir\",\"grammar\":\"Phrase\",\"translation\":\"do widzenia\"},{\"headword\":\"merci\",\"grammar\":\"Interj\",\"translation\":\"dziękuję\"},{\"headword\":\"s'il vous plaît\",\"grammar\":\"Phrase\",\"translation\":\"proszę\"},{\"headword\":\"oui\",\"grammar\":\"Part\",\"translation\":\"tak\"},{\"headword\":\"non\",\"grammar\":\"Part\",\"translation\":\"nie\"}],\"models\":[{\"pattern\":\"Comment allez-vous?\",\"translation\":\"Jak się Pan/Pani miewa?\"}]}"
+      - code: grc
+        language_name: "Ancient Greek"
+        golden: '{"title":"Basic Greetings","lang":"grc","vocabulary":[{"headword":"χαῖρε","grammar":"V","translation":"witaj"},{"headword":"εὖ πράττε","grammar":"Phrase","translation":"dobrze się miej"},{"headword":"ναί","grammar":"Part","translation":"tak"},{"headword":"οὔ","grammar":"Part","translation":"nie"}],"models":[{"pattern":"πῶς ἔχεις;","translation":"Jak się masz?"}]}'
+      - code: heb
+        language_name: "Hebrew"
+        golden: '{"title":"Basic Greetings","lang":"heb","vocabulary":[{"headword":"שָׁלוֹם","grammar":"Interj","transcription":"shalom","translation":"cześć; pokój"},{"headword":"לְהִתְרָאוֹת","grammar":"Phrase","transcription":"lehitraot","translation":"do widzenia"},{"headword":"תּוֹדָה","grammar":"Interj","transcription":"toda","translation":"dziękuję"}],"models":[{"pattern":"מַה שְּׁלוֹמְךָ?","transcription":"ma shlomkha?","translation":"Jak się masz?"}]}'
+      - code: hin
+        language_name: "Hindi"
+        golden: '{"title":"Basic Greetings","lang":"hin","vocabulary":[{"headword":"नमस्ते","grammar":"Interj","transcription":"namaste","translation":"cześć"},{"headword":"अलविदा","grammar":"Interj","transcription":"alvidā","translation":"do widzenia"},{"headword":"धन्यवाद","grammar":"Interj","transcription":"dhanyavād","translation":"dziękuję"}],"models":[{"pattern":"आप कैसे हैं?","transcription":"āp kaise hain?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: hrv
+        language_name: "Croatian"
+        golden: '{"title":"Basic Greetings","lang":"hrv","vocabulary":[{"headword":"zdravo","grammar":"Interj","translation":"cześć"},{"headword":"doviđenja","grammar":"Interj","translation":"do widzenia"},{"headword":"hvala","grammar":"Interj","translation":"dziękuję"},{"headword":"molim","grammar":"Interj","translation":"proszę"}],"models":[{"pattern":"Kako si?","translation":"Jak się masz?"}]}'
+      - code: hun
+        language_name: "Hungarian"
+        golden: '{"title":"Basic Greetings","lang":"hun","vocabulary":[{"headword":"helló","grammar":"Interj","translation":"cześć"},{"headword":"viszontlátásra","grammar":"Interj","translation":"do widzenia"},{"headword":"köszönöm","grammar":"V","translation":"dziękuję"},{"headword":"kérem","grammar":"V","translation":"proszę"}],"models":[{"pattern":"Hogy vagy?","translation":"Jak się masz?"}]}'
+      - code: ind
+        language_name: "Indonesian"
+        golden: '{"title":"Basic Greetings","lang":"ind","vocabulary":[{"headword":"halo","grammar":"Interj","translation":"cześć"},{"headword":"selamat tinggal","grammar":"Phrase","translation":"do widzenia"},{"headword":"terima kasih","grammar":"Phrase","translation":"dziękuję"},{"headword":"tolong","grammar":"Adv","translation":"proszę"}],"models":[{"pattern":"Apa kabar?","translation":"Jak się masz?"}]}'
+      - code: ita
+        language_name: "Italian"
+        golden: '{"title":"Basic Greetings","lang":"ita","vocabulary":[{"headword":"ciao","grammar":"Interj","translation":"cześć"},{"headword":"arrivederci","grammar":"Interj","translation":"do widzenia"},{"headword":"grazie","grammar":"Interj","translation":"dziękuję"},{"headword":"prego","grammar":"Interj","translation":"proszę; nie ma za co"},{"headword":"sì","grammar":"Part","translation":"tak"},{"headword":"no","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Come stai?","translation":"Jak się masz?"}]}'
+      - code: jpn
+        language_name: "Japanese"
+        golden: '{"title":"Basic Greetings","lang":"jpn","vocabulary":[{"headword":"こんにちは","grammar":"Interj","transcription":"konnichiwa","translation":"dzień dobry; cześć"},{"headword":"さようなら","grammar":"Interj","transcription":"sayōnara","translation":"do widzenia"},{"headword":"ありがとう","grammar":"Interj","transcription":"arigatō","translation":"dziękuję"},{"headword":"はい","grammar":"Part","transcription":"hai","translation":"tak"},{"headword":"いいえ","grammar":"Part","transcription":"iie","translation":"nie"}],"models":[{"pattern":"お元気ですか？","transcription":"o-genki desu ka?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: kaz
+        language_name: "Kazakh"
+        golden: '{"title":"Basic Greetings","lang":"kaz","vocabulary":[{"headword":"сәлем","grammar":"Interj","transcription":"sälem","translation":"cześć"},{"headword":"сау болыңыз","grammar":"Phrase","transcription":"saw bolıñız","translation":"do widzenia"},{"headword":"рахмет","grammar":"Interj","transcription":"rahmet","translation":"dziękuję"}],"models":[{"pattern":"Қалайсыз?","transcription":"Qalaysız?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: kor
+        language_name: "Korean"
+        golden: '{"title":"Basic Greetings","lang":"kor","vocabulary":[{"headword":"안녕하세요","grammar":"Phrase","transcription":"annyeonghaseyo","translation":"dzień dobry; cześć"},{"headword":"안녕히 가세요","grammar":"Phrase","transcription":"annyeonghi gaseyo","translation":"do widzenia"},{"headword":"감사합니다","grammar":"Phrase","transcription":"gamsahamnida","translation":"dziękuję"},{"headword":"네","grammar":"Part","transcription":"ne","translation":"tak"}],"models":[{"pattern":"잘 지내세요?","transcription":"jal jinaeseyo?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: lat
+        language_name: "Latin"
+        golden: '{"title":"Basic Greetings","lang":"lat","vocabulary":[{"headword":"salve","grammar":"Interj","translation":"witaj"},{"headword":"vale","grammar":"Interj","translation":"żegnaj"},{"headword":"gratias ago","grammar":"Phrase","translation":"dziękuję"},{"headword":"ita","grammar":"Part","translation":"tak"},{"headword":"non","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Quid agis?","translation":"Jak się masz?"}]}'
+      - code: lit
+        language_name: "Lithuanian"
+        golden: '{"title":"Basic Greetings","lang":"lit","vocabulary":[{"headword":"labas","grammar":"Interj","translation":"cześć"},{"headword":"viso gero","grammar":"Phrase","translation":"do widzenia"},{"headword":"ačiū","grammar":"Interj","translation":"dziękuję"},{"headword":"prašom","grammar":"Interj","translation":"proszę"}],"models":[{"pattern":"Kaip laikaisi?","translation":"Jak się masz?"}]}'
+      - code: nld
+        language_name: "Dutch"
+        golden: '{"title":"Basic Greetings","lang":"nld","vocabulary":[{"headword":"hallo","grammar":"Interj","translation":"cześć"},{"headword":"tot ziens","grammar":"Phrase","translation":"do widzenia"},{"headword":"dank je","grammar":"Phrase","translation":"dziękuję"},{"headword":"alsjeblieft","grammar":"Adv","translation":"proszę"},{"headword":"ja","grammar":"Part","translation":"tak"},{"headword":"nee","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Hoe gaat het?","translation":"Jak się masz?"}]}'
+      - code: por
+        language_name: "Portuguese"
+        golden: '{"title":"Basic Greetings","lang":"por","vocabulary":[{"headword":"olá","grammar":"Interj","translation":"cześć"},{"headword":"tchau","grammar":"Interj","translation":"do widzenia"},{"headword":"obrigado","grammar":"Interj","translation":"dziękuję"},{"headword":"por favor","grammar":"Phrase","translation":"proszę"},{"headword":"sim","grammar":"Part","translation":"tak"},{"headword":"não","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Como vai você?","translation":"Jak się masz?"}]}'
+      - code: ron
+        language_name: "Romanian"
+        golden: '{"title":"Basic Greetings","lang":"ron","vocabulary":[{"headword":"bună","grammar":"Interj","translation":"cześć"},{"headword":"la revedere","grammar":"Phrase","translation":"do widzenia"},{"headword":"mulțumesc","grammar":"V","translation":"dziękuję"},{"headword":"te rog","grammar":"Phrase","translation":"proszę"}],"models":[{"pattern":"Ce mai faci?","translation":"Jak się masz?"}]}'
+      - code: rus
+        language_name: "Russian"
+        golden: '{"title":"Basic Greetings","lang":"rus","vocabulary":[{"headword":"привет","grammar":"Interj","translation":"cześć"},{"headword":"до свидания","grammar":"Phrase","translation":"do widzenia"},{"headword":"спасибо","grammar":"Interj","translation":"dziękuję"},{"headword":"пожалуйста","grammar":"Adv","translation":"proszę; nie ma za co"},{"headword":"да","grammar":"Part","translation":"tak"},{"headword":"нет","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Как дела?","translation":"Jak się masz?"}]}'
+      - code: spa
+        language_name: "Spanish"
+        golden: '{"title":"Basic Greetings","lang":"spa","vocabulary":[{"headword":"hola","grammar":"Interj","translation":"cześć"},{"headword":"adiós","grammar":"Interj","translation":"do widzenia"},{"headword":"gracias","grammar":"Interj","translation":"dziękuję"},{"headword":"por favor","grammar":"Phrase","translation":"proszę"},{"headword":"sí","grammar":"Part","translation":"tak"},{"headword":"no","grammar":"Part","translation":"nie"}],"models":[{"pattern":"¿Cómo estás?","translation":"Jak się masz?"}]}'
+      - code: srp
+        language_name: "Serbian"
+        golden: '{"title":"Basic Greetings","lang":"srp","vocabulary":[{"headword":"здраво","grammar":"Interj","translation":"cześć"},{"headword":"довиђења","grammar":"Interj","translation":"do widzenia"},{"headword":"хвала","grammar":"Interj","translation":"dziękuję"},{"headword":"молим","grammar":"Interj","translation":"proszę"}],"models":[{"pattern":"Kako si?","translation":"Jak się masz?"}]}'
+      - code: tat
+        language_name: "Tatar"
+        golden: '{"title":"Basic Greetings","lang":"tat","vocabulary":[{"headword":"сәлам","grammar":"Interj","transcription":"säläm","translation":"cześć"},{"headword":"сау булыгыз","grammar":"Phrase","transcription":"saw bulıgız","translation":"do widzenia"},{"headword":"рәхмәт","grammar":"Interj","transcription":"räxmät","translation":"dziękuję"}],"models":[{"pattern":"Ничек яшисез?","transcription":"Niçek yaşisez?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: tgk
+        language_name: "Tajik"
+        golden: '{"title":"Basic Greetings","lang":"tgk","vocabulary":[{"headword":"салом","grammar":"Interj","transcription":"salom","translation":"cześć"},{"headword":"хайр","grammar":"Interj","transcription":"xayr","translation":"do widzenia"},{"headword":"ташаккур","grammar":"Interj","transcription":"tašakkur","translation":"dziękuję"}],"models":[{"pattern":"Чӣ хел?","transcription":"Čī xel?","translation":"Jak się masz?"}]}'
+      - code: tur
+        language_name: "Turkish"
+        golden: '{"title":"Basic Greetings","lang":"tur","vocabulary":[{"headword":"merhaba","grammar":"Interj","translation":"cześć"},{"headword":"güle güle","grammar":"Phrase","translation":"do widzenia"},{"headword":"teşekkür ederim","grammar":"Phrase","translation":"dziękuję"},{"headword":"lütfen","grammar":"Adv","translation":"proszę"},{"headword":"evet","grammar":"Part","translation":"tak"},{"headword":"hayır","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Nasılsın?","translation":"Jak się masz?"}]}'
+      - code: uig
+        language_name: "Uyghur"
+        golden: '{"title":"Basic Greetings","lang":"uig","vocabulary":[{"headword":"ياخشىمۇسىز","grammar":"Phrase","transcription":"yaxshimusiz","translation":"dzień dobry"},{"headword":"خەير","grammar":"Interj","transcription":"xeyr","translation":"do widzenia"},{"headword":"رەھمەت","grammar":"Interj","transcription":"rehmet","translation":"dziękuję"}],"models":[{"pattern":"قانداق ئەھۋالىڭىز؟","transcription":"qandaq ehwaliñiz?","translation":"Jak się Pan/Pani miewa?"}]}'
+      - code: ukr
+        language_name: "Ukrainian"
+        golden: '{"title":"Basic Greetings","lang":"ukr","vocabulary":[{"headword":"привіт","grammar":"Interj","translation":"cześć"},{"headword":"до побачення","grammar":"Phrase","translation":"do widzenia"},{"headword":"дякую","grammar":"V","translation":"dziękuję"},{"headword":"будь ласка","grammar":"Phrase","translation":"proszę"},{"headword":"так","grammar":"Part","translation":"tak"},{"headword":"ні","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Як справи?","translation":"Jak się masz?"}]}'
+      - code: uzb
+        language_name: "Uzbek"
+        golden: '{"title":"Basic Greetings","lang":"uzb","vocabulary":[{"headword":"salom","grammar":"Interj","translation":"cześć"},{"headword":"xayr","grammar":"Interj","translation":"do widzenia"},{"headword":"rahmat","grammar":"Interj","translation":"dziękuję"},{"headword":"iltimos","grammar":"Adv","translation":"proszę"}],"models":[{"pattern":"Qandaysiz?","translation":"Jak się masz?"}]}'
+      - code: vie
+        language_name: "Vietnamese"
+        golden: '{"title":"Basic Greetings","lang":"vie","vocabulary":[{"headword":"xin chào","grammar":"Phrase","translation":"cześć"},{"headword":"tạm biệt","grammar":"Phrase","translation":"do widzenia"},{"headword":"cảm ơn","grammar":"Phrase","translation":"dziękuję"},{"headword":"vâng","grammar":"Part","translation":"tak"},{"headword":"không","grammar":"Part","translation":"nie"}],"models":[{"pattern":"Bạn có khỏe không?","translation":"Jak się masz?"}]}'
+      - code: yid
+        language_name: "Yiddish"
+        golden: '{"title":"Basic Greetings","lang":"yid","vocabulary":[{"headword":"שלום","grammar":"Interj","transcription":"sholem","translation":"pokój; cześć"},{"headword":"אַ גוטן","grammar":"Phrase","transcription":"a gutn","translation":"do widzenia"},{"headword":"אַ דאַנק","grammar":"Phrase","transcription":"a dank","translation":"dziękuję"}],"models":[{"pattern":"וִי גייט עס?","transcription":"vi geyt es?","translation":"Jak się masz?"}]}'
+
+  # ── phraseforge-core standalone ──────────────────────────────────────
+  - id: phraseforge-core
+    skills:
+      - phraseforge-core
+    prompt: |
+      You are a language lesson author. Given a topic, produce a Lesson JSON following
+      the phraseforge-core skill instructions exactly.
+      Output JSON only: {"title": "...", "lang": "lat", "vocabulary": [...], "models": [...]}
+    message: |
+      Create a minimal Latin lesson about the word "amor" (love).
+      Include 3 vocabulary entries and 1 model phrase.
+    golden: '{"title": "Amor","lang": "lat","vocabulary": [{"headword": "amor","grammar": "N m","translation": "miłość"},{"headword": "amare","grammar": "V","translation": "kochać"},{"headword": "amicus","grammar": "N m","translation": "przyjaciel"}],"models": [{"pattern": "Te amo.","translation": "Kocham cię."}]}'
+
+  # ── research-core ─────────────────────────────────────────────────────
+  - id: research-core
+    skills:
+      - research-core
+    prompt: |
+      Write a Markdown research report following the report shape from the research-core skill:
+      Title, Summary (~80 words), Body (H2 per subtopic, prose), Open questions, References.
+      Output Markdown only.
+    message: |
+      Write a brief research report on the fall of the Roman Republic.
+      Include at least 2 subtopics and a references section.
+    golden: |
+      # The Fall of the Roman Republic
+
+      ## Summary
+
+      The Roman Republic collapsed between 133 and 27 BCE due to political instability,
+      civil wars, and the rise of military strongmen. Social tensions from inequality,
+      slave labor competition, and political corruption weakened republican institutions.
+      Julius Caesar's crossing of the Rubicon in 49 BCE and subsequent assassination
+      in 44 BCE accelerated the final transition to the Principate under Augustus.
+
+      ## Political Instability
+
+      The Gracchi brothers attempted reforms that alienated the Senate.
+
+      ## Civil Wars
+
+      Marius and Sulla, then Caesar and Pompey, divided Rome.
+
+      ## Open Questions
+
+      - Could the Republic have survived with earlier reforms?
+
+      ## References
+
+      - [wiki:Roman_Republic]
+
+  # ── phraseforge-web ───────────────────────────────────────────────────
+  - id: phraseforge-web
+    skills:
+      - phraseforge-web
+    prompt: |
+      Follow the phraseforge-web skill instructions exactly.
+      Export the provided lesson JSON to a Docusaurus MDX page.
+      Output only the MDX file content.
+    message: |
+      Export this lesson to MDX:
+      {"title": "Basic Latin", "lang": "lat", "vocabulary": [{"headword": "aqua", "grammar": "N f", "translation": "woda"}], "models": [{"pattern": "Aqua est vita.", "translation": "Woda jest życiem."}]}
+    golden: |
+      import something from somewhere
+
+      export const lesson = {title: "Basic Latin"};
+
+      # Basic Latin
+
+  # ── phraseforge-anki ──────────────────────────────────────────────────
+  - id: phraseforge-anki
+    skills:
+      - phraseforge-anki
+    prompt: |
+      Follow the phraseforge-anki skill instructions exactly.
+      Export the provided lesson JSON to Anki-compatible TSV format.
+      Output only the TSV content (tab-separated, one card per line).
+    message: |
+      Export this lesson to Anki TSV:
+      {"title": "Basic Latin", "lang": "lat", "vocabulary": [{"headword": "aqua", "grammar": "N f", "translation": "woda"}], "models": [{"pattern": "Aqua est vita.", "translation": "Woda jest życiem."}]}
+    golden: "aqua\twoda\n"
+
+  # ── phraseforge-typst ─────────────────────────────────────────────────
+  - id: phraseforge-typst
+    skills:
+      - phraseforge-typst
+    prompt: |
+      Follow the phraseforge-typst skill instructions exactly.
+      Export the provided lesson JSON to Typst markup for PDF generation.
+      Output only the Typst source.
+    message: |
+      Export this lesson to Typst:
+      {"title": "Basic Latin", "lang": "lat", "vocabulary": [{"headword": "aqua", "grammar": "N f", "translation": "woda"}], "models": [{"pattern": "Aqua est vita.", "translation": "Woda jest życiem."}]}
+    golden: |
+      #set document(title: "Basic Latin")
+      = Basic Latin
+
+  # ── research-web ──────────────────────────────────────────────────────
+  - id: research-web
+    skills:
+      - research-core
+      - research-web
+    prompt: |
+      Follow the research-web skill instructions exactly.
+      Export the provided Markdown report to a Docusaurus MDX page.
+      Output only the MDX file content.
+    message: |
+      Export this report to Docusaurus MDX:
+      # Roman Republic
+
+      ## Summary
+
+      Brief overview of the Roman Republic.
+
+      ## References
+
+      - [wiki:Roman_Republic]
+    golden: |
+      import something from somewhere
+
+      # Roman Republic
