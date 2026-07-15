@@ -1,6 +1,6 @@
 ---
-name: anki-qa
-description: Generate and review Anki-style flashcards stored as YAML files of Q/A/C/N records, organized as a deck manifest (flashcard.yml) referencing one *.yml file per subtopic. Use when the user invokes /anki-qa, asks to create or expand flashcards for a topic, or wants to review/improve an existing flashcard deck for learning something from scratch on a smartphone.
+name: anki-comp
+description: Generate and review Anki-style flashcards stored as YAML files of Q/A/C/N records, organized as a deck manifest (flashcard.yml) referencing one *.yml file per subtopic. Use when the user invokes /anki-comp, asks to create or expand flashcards for a topic, or wants to review/improve an existing flashcard deck for learning something from scratch on a smartphone.
 ---
 
 # Anki Q&A flashcard generator
@@ -107,6 +107,7 @@ Each subtopic `*.yml` is a plain YAML list of card records:
 6. Draft cards:
    - One clear, atomic fact or concept per card — don't cram multiple ideas into one Q/A.
    - Write questions that are answerable from the answer alone (no hidden context).
+   - Questions must be self-contained and source-agnostic: never reference the source material's own structure (e.g. "per Lecture 4", "in Chapter 2", "as this article states", "per the cited research") to point at where the fact came from. Ask about the concept directly, as something to know, not as something to locate. If a study or named source is itself part of the fact being tested (e.g. "what did the Smith et al. 2020 study find?"), name it in the question — that's testing recall of the finding, not the source's position in the material.
    - Keep answers short; push supporting detail into `N` only if it's needed to grade/complete the answer, not as padding.
    - Use `C` for anything the learner would type or read as code/commands.
 7. Append new cards to the end of the relevant subtopic file (existing cards are never reordered or rewritten unless the user asks for a review pass). Create the file (and its `flashcard.yml` entry) if it doesn't exist yet.
